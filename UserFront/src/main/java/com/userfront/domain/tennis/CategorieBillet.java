@@ -1,17 +1,20 @@
 package com.userfront.domain.tennis;
 
+import com.userfront.enumeration.CategorieBilletEnum;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "match_tennis")
-public class MatchTennis {
+@Table(name = "categorie_billet")
+public class CategorieBillet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "niveau")
-    private String niveau;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categorie_billet_enum")
+    private CategorieBilletEnum categorieBilletEnum;
 
     @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "billet_billet_id")
@@ -25,12 +28,12 @@ public class MatchTennis {
         this.billet = billet;
     }
 
-    public String getNiveau() {
-        return niveau;
+    public CategorieBilletEnum getCategorieBilletEnum() {
+        return categorieBilletEnum;
     }
 
-    public void setNiveau(String niveau) {
-        this.niveau = niveau;
+    public void setCategorieBilletEnum(CategorieBilletEnum categorieBilletEnum) {
+        this.categorieBilletEnum = categorieBilletEnum;
     }
 
     public Long getId() {
