@@ -3,17 +3,20 @@ package com.userfront.domain.tennis;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "match_tennis")
-public class MatchTennis {
+@Table(name = "categorie_place")
+public class CategoriePlace {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "niveau")
-    private String niveau;
+    @Column(name = "description")
+    /**
+     * Loges ( bleu ) Cat 1 Cat 2
+     */
+    private String description;
 
-    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne
     @JoinColumn(name = "billet_billet_id")
     private Billet billet;
 
@@ -25,12 +28,12 @@ public class MatchTennis {
         this.billet = billet;
     }
 
-    public String getNiveau() {
-        return niveau;
+    public String getDescription() {
+        return description;
     }
 
-    public void setNiveau(String niveau) {
-        this.niveau = niveau;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getId() {

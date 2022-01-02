@@ -41,6 +41,18 @@ public class Tournoi {
     @Column(name = "nbre_joueurs_max")
     private String nbre_joueurs_max;
 
+    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "billet_billet_id")
+    private Billet billet;
+
+    public Billet getBillet() {
+        return billet;
+    }
+
+    public void setBillet(Billet billet) {
+        this.billet = billet;
+    }
+
     public String getNbre_joueurs_max() {
         return nbre_joueurs_max;
     }
