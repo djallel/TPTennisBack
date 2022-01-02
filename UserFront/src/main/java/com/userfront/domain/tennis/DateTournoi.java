@@ -3,18 +3,18 @@ package com.userfront.domain.tennis;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "type_tournoi")
-public class TypeTournoi {
+@Table(name = "date_tournoi")
+public class DateTournoi {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "description_messieur")
+    @Column(name = "description_tour")
     /**
-     * TypeTournoi = SimpleMessieurs ou DoubleMessieurs
+     * 1er tour / 1/2 final / final
      */
-    private String description_messieur;
+    private String description_tour;
 
     @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "tournoi_tournoi_id")
@@ -28,12 +28,12 @@ public class TypeTournoi {
         this.tournoi = tournoi;
     }
 
-    public String getDescription_messieur() {
-        return description_messieur;
+    public String getDescription_tour() {
+        return description_tour;
     }
 
-    public void setDescription_messieur(String description_messieur) {
-        this.description_messieur = description_messieur;
+    public void setDescription_tour(String description_tour) {
+        this.description_tour = description_tour;
     }
 
     public Long getId() {
@@ -46,9 +46,9 @@ public class TypeTournoi {
 
     @Override
     public String toString() {
-        return "TypeTournoi{" +
+        return "DateTournoi{" +
                 "id=" + id +
-                ", description_messieur='" + description_messieur + '\'' +
+                ", description_tour='" + description_tour + '\'' +
                 ", tournoi=" + tournoi +
                 '}';
     }
