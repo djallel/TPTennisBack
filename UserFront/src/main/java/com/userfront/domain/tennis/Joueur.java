@@ -1,25 +1,41 @@
 package com.userfront.domain.tennis;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Joueur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long joueurId;
     private String name;
     private String email;
     private String phone;
     private String NumLicence;
     private String description;//Vainqueur/qualifié/demifinaliste/finaliste
 
-    public Long getId() {
-        return id;
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(name = "joueur_tournois",
+            joinColumns = @JoinColumn(name = "joueur_joueurId"),
+            inverseJoinColumns = @JoinColumn(name = "tournois_tournoi_id"))
+    private List<Tournoi> tournois = new ArrayList<>();
+
+    public List<Tournoi> getTournois() {
+        return tournois;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTournois(List<Tournoi> tournois) {
+        this.tournois = tournois;
+    }
+
+    public Long getJoueurId() {
+        return joueurId;
+    }
+
+    public void setJoueurId(Long id) {
+        this.joueurId = id;
     }
 
     public String getName() {
@@ -65,12 +81,13 @@ public class Joueur {
     @Override
     public String toString() {
         return "Joueur{" +
-                "id=" + id +
+                "joueurId=" + joueurId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", NumLicence='" + NumLicence + '\'' +
                 ", description='" + description + '\'' +
+                ", tournois=" + tournois +
                 '}';
     }
 }
