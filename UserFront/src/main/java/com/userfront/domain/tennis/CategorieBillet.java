@@ -12,13 +12,21 @@ public class CategorieBillet {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "categorie_billet_enum")
-    private CategorieBilletEnum categorieBilletEnum;
 
     @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "billet_billet_id")
+    @JoinColumn(name = "billet_id")
     private Billet billet;
+
+    @Column(name = "categorie_billet_enum_string")
+    private String categorieBilletEnumString;
+
+    public String getCategorieBilletEnumString() {
+        return categorieBilletEnumString;
+    }
+
+    public void setCategorieBilletEnumString(String categorieBilletEnumString) {
+        this.categorieBilletEnumString = categorieBilletEnumString;
+    }
 
     public Billet getBillet() {
         return billet;
@@ -26,14 +34,6 @@ public class CategorieBillet {
 
     public void setBillet(Billet billet) {
         this.billet = billet;
-    }
-
-    public CategorieBilletEnum getCategorieBilletEnum() {
-        return categorieBilletEnum;
-    }
-
-    public void setCategorieBilletEnum(CategorieBilletEnum categorieBilletEnum) {
-        this.categorieBilletEnum = categorieBilletEnum;
     }
 
     public Long getId() {
