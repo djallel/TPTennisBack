@@ -6,14 +6,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.userfront.dao.*;
+import com.userfront.domain.tennis.Billet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.userfront.dao.PrimaryAccountDao;
-import com.userfront.dao.PrimaryTransactionDao;
-import com.userfront.dao.RecipientDao;
-import com.userfront.dao.SavingsAccountDao;
-import com.userfront.dao.SavingsTransactionDao;
 import com.userfront.domain.PrimaryAccount;
 import com.userfront.domain.PrimaryTransaction;
 import com.userfront.domain.Recipient;
@@ -43,7 +40,9 @@ public class TransactionServiceImpl implements TransactionService {
 	
 	@Autowired
 	private RecipientDao recipientDao;
-	
+
+    @Autowired
+    private BilletDao billetDao;
 
 	public List<PrimaryTransaction> findPrimaryTransactionList(String username){
         User user = userService.findByUsername(username);
@@ -120,6 +119,27 @@ public class TransactionServiceImpl implements TransactionService {
 
     public void deleteRecipientByName(String recipientName) {
         recipientDao.deleteByName(recipientName);
+    }
+
+    public Billet saveBillet(Billet billet) {
+        return billetDao.save(billet);
+    }
+
+    public Billet findByBilletId(Long billetId) {
+        return billetDao.findById( billetId);
+    }
+
+    public void deleteByBilletId(Long billetId) {
+        billetDao.deleteById(billetId);
+    }
+
+    public List<Billet> findBilletList(Principal principal) {
+        String username = principal.getName();
+        List<Billet> billetList = billetDao.findAll().stream() 			//convert list to stream
+                .filter(billet -> username.equals(billet.getUser().getUsername()))	//filters the line, equals to username
+                .collect(Collectors.toList());
+
+        return billetList;
     }
     
     public void toSomeoneElseTransfer(Recipient recipient, String accountType, String amount, PrimaryAccount primaryAccount, SavingsAccount savingsAccount) {

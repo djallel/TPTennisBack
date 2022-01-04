@@ -5,8 +5,6 @@ import com.userfront.domain.Recipient;
 import com.userfront.domain.SavingsAccount;
 import com.userfront.domain.User;
 import com.userfront.domain.tennis.Billet;
-import com.userfront.domain.tennis.CategorieBillet;
-import com.userfront.enumeration.CategorieBilletEnum;
 import com.userfront.service.TransactionService;
 import com.userfront.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Controller
-@RequestMapping("/showbilleterie")
-public class BillleterieController {
+/*@Controller
+@RequestMapping("/showbilleterie")*/
+public class BillleterieSauvegardeController {/*
 
     @Autowired
     private TransactionService transactionService;
@@ -35,81 +32,73 @@ public class BillleterieController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping(value = "/betweenAccounts", method = RequestMethod.GET)
+    public String betweenAccounts(Model model) {
+        model.addAttribute("transferFrom", "");
+        model.addAttribute("transferTo", "");
+        model.addAttribute("amount", "");
 
+        return "betweenAccounts";
+    }
+
+    @RequestMapping(value = "/betweenAccounts", method = RequestMethod.POST)
+    public String betweenAccountsPost(
+            @ModelAttribute("transferFrom") String transferFrom,
+            @ModelAttribute("transferTo") String transferTo,
+            @ModelAttribute("amount") String amount,
+            Principal principal
+    ) throws Exception {
+        User user = userService.findByUsername(principal.getName());
+        PrimaryAccount primaryAccount = user.getPrimaryAccount();
+        SavingsAccount savingsAccount = user.getSavingsAccount();
+        transactionService.betweenAccountsTransfer(transferFrom, transferTo, amount, primaryAccount, savingsAccount);
+
+        return "redirect:/userFront";
+    }
+    
     @RequestMapping(value = "/billeterie", method = RequestMethod.GET)
-    public String billet(Model model, Principal principal) {
-        List<Billet> billetList = transactionService.findBilletList(principal);
+    public String recipient(Model model, Principal principal) {
+        List<Recipient> recipientList = transactionService.findRecipientList(principal);
 
-        Billet billet = new Billet();
+        Recipient recipient = new Recipient();
 
-        model.addAttribute("billetList", billetList);
-        model.addAttribute("billet", billet);
+        model.addAttribute("recipientList", recipientList);
+        model.addAttribute("recipient", recipient);
 
         return "billeterie";
     }
 
     @RequestMapping(value = "/billeterie/save", method = RequestMethod.POST)
-    public String billetPost(@ModelAttribute("recipient") Recipient recipient,
+    public String recipientPost(@ModelAttribute("recipient") Recipient recipient,
                                 @ModelAttribute("categorieBilletForm") String categorieBilletForm,
-                                @ModelAttribute("journeeDuu") String date,
+                                @ModelAttribute("dateString") String date,
                                 @ModelAttribute("location") String location,
                                 @ModelAttribute("place") String place,
                                 @ModelAttribute("billet") Billet billet,
-                                @ModelAttribute("tournoi") String tournoi,
-
 
 
                                 Principal principal) throws ParseException {
 
+        User user = userService.findByUsername(principal.getName());
+        recipient.setUser(user);
+        transactionService.saveRecipient(recipient);
         String categorieBilletForm_AManipuler = categorieBilletForm;
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date d1 = format1.parse( date );
-        billet.setJourneeDu(d1);
-        System.out.println("testtest d1 :" +d1);
 
         System.out.println("testtest categorieBilletForm_AManipuler :" +categorieBilletForm_AManipuler);
-        List<CategorieBillet> categorieBillets = new ArrayList<>();
-        CategorieBillet categorieBillet = new CategorieBillet();
-        if(categorieBilletForm_AManipuler.equals(CategorieBilletEnum.BILLET_GRAND_PUBLIC_LICENCIE.toString())){
-            categorieBillet.setCategorieBilletEnumString(CategorieBilletEnum.BILLET_GRAND_PUBLIC_LICENCIE.categorieBillet);
-        }
-        if(categorieBilletForm_AManipuler.equals(CategorieBilletEnum.BILLET_GRAND_PUBLIC_NON_LICENCIE.toString())){
-            categorieBillet.setCategorieBilletEnumString(CategorieBilletEnum.BILLET_GRAND_PUBLIC_NON_LICENCIE.categorieBillet);
-        }
-        if(categorieBilletForm_AManipuler.equals(CategorieBilletEnum.BILLET_BIG_MATCH_LICENCIE.toString())){
-            categorieBillet.setCategorieBilletEnumString(CategorieBilletEnum.BILLET_BIG_MATCH_LICENCIE.categorieBillet);
-        }
-        if(categorieBilletForm_AManipuler.equals(CategorieBilletEnum.BILLET_BIG_MATCH_NON_LICENCIE.toString())){
-            categorieBillet.setCategorieBilletEnumString(CategorieBilletEnum.BILLET_BIG_MATCH_NON_LICENCIE.categorieBillet);
-        }
-        categorieBillets.add(categorieBillet);
-        billet.setCategorieBillets(categorieBillets);
-
-
-
-
+        System.out.println("testtest d1 :" +d1);
         System.out.println("testtest location :" +location);
         System.out.println("testtest place :" +place);
         System.out.println("testtest billet :" +billet);
-        System.out.println("testtest tournoi 3i :" +tournoi);
         System.out.println("testtest billet.getNbreplace :" +billet.getNbreplace());
-        System.out.println("testtest billet.getPrixBillet :" +billet.getPrixBillet());
-
-        User user = userService.findByUsername(principal.getName());
-/*        recipient.setUser(user);
-        transactionService.saveRecipient(recipient);*/
-
-        billet.setUser(user);
-        categorieBillet.setBillet(billet);
-        transactionService.saveBillet(billet);
-
 
 
         return "redirect:/showbilleterie/billeterie";
     }
 
     @RequestMapping(value = "/billeterie/edit", method = RequestMethod.GET)
-    public String billetEdit(@RequestParam(value = "recipientName") String recipientName, Model model, Principal principal){
+    public String recipientEdit(@RequestParam(value = "recipientName") String recipientName, Model model, Principal principal){
 
         Recipient recipient = transactionService.findRecipientByName(recipientName);
         List<Recipient> recipientList = transactionService.findRecipientList(principal);
@@ -122,7 +111,7 @@ public class BillleterieController {
 
     @RequestMapping(value = "/billeterie/delete", method = RequestMethod.GET)
     @Transactional
-    public String billetDelete(@RequestParam(value = "recipientName") String recipientName, Model model, Principal principal){
+    public String recipientDelete(@RequestParam(value = "recipientName") String recipientName, Model model, Principal principal){
 
         transactionService.deleteRecipientByName(recipientName);
 
@@ -136,4 +125,22 @@ public class BillleterieController {
         return "billeterie";
     }
 
+    @RequestMapping(value = "/toSomeoneElse",method = RequestMethod.GET)
+    public String toSomeoneElse(Model model, Principal principal) {
+        List<Recipient> recipientList = transactionService.findRecipientList(principal);
+
+        model.addAttribute("recipientList", recipientList);
+        model.addAttribute("accountType", "");
+
+        return "toSomeoneElse";
+    }
+
+    @RequestMapping(value = "/toSomeoneElse",method = RequestMethod.POST)
+    public String toSomeoneElsePost(@ModelAttribute("recipientName") String recipientName, @ModelAttribute("accountType") String accountType, @ModelAttribute("amount") String amount, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        Recipient recipient = transactionService.findRecipientByName(recipientName);
+        transactionService.toSomeoneElseTransfer(recipient, accountType, amount, user.getPrimaryAccount(), user.getSavingsAccount());
+
+        return "redirect:/userFront";
+    }*/
 }

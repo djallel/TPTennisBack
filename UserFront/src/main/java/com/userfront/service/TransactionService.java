@@ -2,12 +2,14 @@ package com.userfront.service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.userfront.domain.PrimaryAccount;
 import com.userfront.domain.PrimaryTransaction;
 import com.userfront.domain.Recipient;
 import com.userfront.domain.SavingsAccount;
 import com.userfront.domain.SavingsTransaction;
+import com.userfront.domain.tennis.Billet;
 
 public interface TransactionService {
 	List<PrimaryTransaction> findPrimaryTransactionList(String username);
@@ -32,4 +34,13 @@ public interface TransactionService {
     void deleteRecipientByName(String recipientName);
     
     void toSomeoneElseTransfer(Recipient recipient, String accountType, String amount, PrimaryAccount primaryAccount, SavingsAccount savingsAccount);
+    public Billet saveBillet(Billet billet) ;
+
+    public Billet findByBilletId(Long billetId) ;
+
+    public void deleteByBilletId(Long billetId);
+
+    public List<Billet> findBilletList(Principal principal) ;
+
+
 }
