@@ -1,5 +1,8 @@
 package com.userfront.domain.tennis;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.userfront.domain.User;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -7,12 +10,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "billet")
 public class Billet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "billetId", nullable = false)
-    private Long billetId;
+    private Long id;
 
     @OneToMany(mappedBy = "billet", cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
     private List<CategorieBillet> categorieBillets = new ArrayList<>();
@@ -21,8 +22,8 @@ public class Billet {
     @Column(name = "journee_du")
     private Date journeeDu;
 
-    @Column(name = "nbre_place")
-    private Integer nbre_place;
+    @Column(name = "nbreplace")
+    private String nbreplace;
 
     @Column(name = "prix_billet", precision = 19, scale = 2)
     private BigDecimal prixBillet;
@@ -38,6 +39,19 @@ public class Billet {
 
     @OneToMany(mappedBy = "billet", cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
     private List<CategoriePlace> categoriePlaces = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public List<CategoriePlace> getCategoriePlaces() {
         return categoriePlaces;
@@ -79,12 +93,12 @@ public class Billet {
         this.prixBillet = prixBillet;
     }
 
-    public Integer getNbre_place() {
-        return nbre_place;
+    public String getNbreplace() {
+        return nbreplace;
     }
 
-    public void setNbre_place(Integer nbre_place) {
-        this.nbre_place = nbre_place;
+    public void setNbreplace(String nbreplace) {
+        this.nbreplace = nbreplace;
     }
 
     public Date getJourneeDu() {
@@ -103,11 +117,11 @@ public class Billet {
         this.categorieBillets = categorieBillets;
     }
 
-    public Long getBilletId() {
-        return billetId;
+    public Long getId() {
+        return id;
     }
 
-    public void setBilletId(Long billetId) {
-        this.billetId = billetId;
+    public void setId(Long billetId) {
+        this.id = billetId;
     }
 }

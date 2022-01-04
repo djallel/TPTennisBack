@@ -17,7 +17,7 @@ public class Emplacement {
     private String libelle;
 
     @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "billet_billet_id")
+    @JoinColumn(name = "billet_id")
     private Billet billet;
 
     public Billet getBillet() {

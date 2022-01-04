@@ -17,7 +17,7 @@ public class CategoriePlace {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "billet_billet_id")
+    @JoinColumn(name = "billet_id")
     private Billet billet;
 
     public Billet getBillet() {
