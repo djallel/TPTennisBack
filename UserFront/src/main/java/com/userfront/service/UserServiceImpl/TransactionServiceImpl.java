@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.userfront.dao.*;
-import com.userfront.domain.tennis.Billet;
+import com.userfront.domain.tennis.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +43,18 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     private BilletDao billetDao;
+
+    @Autowired
+    private TournoiDao tournoiDao;
+
+    @Autowired
+    private MatchTennisDao matchTennisDao;
+
+    @Autowired
+    private JoueurDao joueurDao;
+
+    @Autowired
+    private ArbitreDao arbitreDao;
 
 	public List<PrimaryTransaction> findPrimaryTransactionList(String username){
         User user = userService.findByUsername(username);
@@ -121,27 +133,6 @@ public class TransactionServiceImpl implements TransactionService {
         recipientDao.deleteByName(recipientName);
     }
 
-    public Billet saveBillet(Billet billet) {
-        return billetDao.save(billet);
-    }
-
-    public Billet findByBilletId(Long billetId) {
-        return billetDao.findById( billetId);
-    }
-
-    public void deleteByBilletId(Long billetId) {
-        billetDao.deleteById(billetId);
-    }
-
-    public List<Billet> findBilletList(Principal principal) {
-        String username = principal.getName();
-        List<Billet> billetList = billetDao.findAll().stream() 			//convert list to stream
-                .filter(billet -> username.equals(billet.getUser().getUsername()))	//filters the line, equals to username
-                .collect(Collectors.toList());
-
-        return billetList;
-    }
-    
     public void toSomeoneElseTransfer(Recipient recipient, String accountType, String amount, PrimaryAccount primaryAccount, SavingsAccount savingsAccount) {
         if (accountType.equalsIgnoreCase("Primary")) {
             primaryAccount.setAccountBalance(primaryAccount.getAccountBalance().subtract(new BigDecimal(amount)));

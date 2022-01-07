@@ -1,5 +1,8 @@
 package com.userfront.domain.tennis;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.userfront.domain.User;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,6 +12,19 @@ public class MatchTennis {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Column(name = "niveau")
     private String niveau;
