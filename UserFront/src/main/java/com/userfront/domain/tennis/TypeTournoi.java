@@ -17,7 +17,7 @@ public class TypeTournoi {
     private String description_messieur;
 
     @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "tournoi_tournoi_id")
+    @JoinColumn(name = "tournoi_id")
     private Tournoi tournoi;
 
     public Tournoi getTournoi() {
