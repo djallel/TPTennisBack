@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Joueur {
+public class Arbitre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -97,13 +97,14 @@ public class Joueur {
 
     @Override
     public String toString() {
-        return "Joueur{" +
-                "joueurId=" + id +
+        return "Arbitre{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", NumLicence='" + NumLicence + '\'' +
                 ", description='" + description + '\'' +
+                ", user=" + user +
                 ", tournois=" + tournois +
                 '}';
     }

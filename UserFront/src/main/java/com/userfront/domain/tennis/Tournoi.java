@@ -1,5 +1,8 @@
 package com.userfront.domain.tennis;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.userfront.domain.User;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,9 +13,20 @@ public class Tournoi {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long tournoiId;
+    private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @ManyToMany(mappedBy = "tournois")
     private List<Joueur> joueurs = new ArrayList<>();
@@ -125,18 +139,18 @@ public class Tournoi {
         this.joueurs = joueurs;
     }
 
-    public Long getTournoiId() {
-        return tournoiId;
+    public Long getId() {
+        return id;
     }
 
-    public void setTournoiId(Long id) {
-        this.tournoiId = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
         return "Tournoi{" +
-                "tournoiId=" + tournoiId +
+                "tournoiId=" + id +
                 ", joueurs=" + joueurs +
                 ", typeTournois=" + typeTournois +
                 ", dateTournois=" + dateTournois +

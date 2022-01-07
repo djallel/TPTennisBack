@@ -7,6 +7,7 @@ import com.userfront.domain.User;
 import com.userfront.domain.tennis.Billet;
 import com.userfront.domain.tennis.CategorieBillet;
 import com.userfront.enumeration.CategorieBilletEnum;
+import com.userfront.service.BilletService;
 import com.userfront.service.TransactionService;
 import com.userfront.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,15 @@ public class BillleterieController {
     private TransactionService transactionService;
 
     @Autowired
+    private BilletService billetService;
+
+    @Autowired
     private UserService userService;
 
 
     @RequestMapping(value = "/billeterie", method = RequestMethod.GET)
     public String billet(Model model, Principal principal) {
-        List<Billet> billetList = transactionService.findBilletList(principal);
+        List<Billet> billetList = billetService.findBilletList(principal);
 
         Billet billet = new Billet();
 
@@ -101,7 +105,7 @@ public class BillleterieController {
 
         billet.setUser(user);
         categorieBillet.setBillet(billet);
-        transactionService.saveBillet(billet);
+        billetService.saveBillet(billet);
 
 
 

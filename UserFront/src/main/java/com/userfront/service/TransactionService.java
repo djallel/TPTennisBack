@@ -9,7 +9,7 @@ import com.userfront.domain.PrimaryTransaction;
 import com.userfront.domain.Recipient;
 import com.userfront.domain.SavingsAccount;
 import com.userfront.domain.SavingsTransaction;
-import com.userfront.domain.tennis.Billet;
+import com.userfront.domain.tennis.*;
 
 public interface TransactionService {
 	List<PrimaryTransaction> findPrimaryTransactionList(String username);
@@ -21,6 +21,7 @@ public interface TransactionService {
     void saveSavingsDepositTransaction(SavingsTransaction savingsTransaction);
     
     void savePrimaryWithdrawTransaction(PrimaryTransaction primaryTransaction);
+
     void saveSavingsWithdrawTransaction(SavingsTransaction savingsTransaction);
     
     void betweenAccountsTransfer(String transferFrom, String transferTo, String amount, PrimaryAccount primaryAccount, SavingsAccount savingsAccount) throws Exception;
@@ -34,13 +35,5 @@ public interface TransactionService {
     void deleteRecipientByName(String recipientName);
     
     void toSomeoneElseTransfer(Recipient recipient, String accountType, String amount, PrimaryAccount primaryAccount, SavingsAccount savingsAccount);
-    public Billet saveBillet(Billet billet) ;
-
-    public Billet findByBilletId(Long billetId) ;
-
-    public void deleteByBilletId(Long billetId);
-
-    public List<Billet> findBilletList(Principal principal) ;
-
 
 }
