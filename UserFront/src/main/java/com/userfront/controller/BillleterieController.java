@@ -6,10 +6,10 @@ import com.userfront.domain.SavingsAccount;
 import com.userfront.domain.User;
 import com.userfront.domain.tennis.Billet;
 import com.userfront.domain.tennis.CategorieBillet;
+import com.userfront.domain.tennis.MatchTennis;
+import com.userfront.domain.tennis.Tournoi;
 import com.userfront.enumeration.CategorieBilletEnum;
-import com.userfront.service.BilletService;
-import com.userfront.service.TransactionService;
-import com.userfront.service.UserService;
+import com.userfront.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,17 +37,33 @@ public class BillleterieController {
     private BilletService billetService;
 
     @Autowired
+    private TournoiService tournoiService;
+
+    @Autowired
+    private MatchTennisService matchTennisService;
+
+    @Autowired
     private UserService userService;
 
 
     @RequestMapping(value = "/billeterie", method = RequestMethod.GET)
     public String billet(Model model, Principal principal) {
         List<Billet> billetList = billetService.findBilletList(principal);
+        List<Tournoi> tournoiList = tournoiService.findTournoiList(principal);
+        List<MatchTennis> matchTennisList = matchTennisService.findMatchTennisList(principal);
 
         Billet billet = new Billet();
+        Tournoi tournoi = new Tournoi();
+        MatchTennis matchTennis = new MatchTennis();
 
         model.addAttribute("billetList", billetList);
         model.addAttribute("billet", billet);
+
+        model.addAttribute("tournoiList", tournoiList);
+        model.addAttribute("tournoi", tournoi);
+
+        model.addAttribute("matchTennisList", matchTennisList);
+        model.addAttribute("matchTennis", matchTennis);
 
         return "billeterie";
     }
@@ -60,8 +76,7 @@ public class BillleterieController {
                                 @ModelAttribute("place") String place,
                                 @ModelAttribute("billet") Billet billet,
                                 @ModelAttribute("tournoi") String tournoi,
-
-
+                                @ModelAttribute("matchTennis") String matchTennis,
 
                                 Principal principal) throws ParseException {
 

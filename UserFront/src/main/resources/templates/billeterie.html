@@ -52,7 +52,7 @@
                     <label for="tournoi">Tournoi :</label>
 
                     <select class="form-control" th:value="${tournoi}" name="tournoi" id="tournoi" >
-                        <option data-th-each="eachBillet : ${billetList}" data-th-text="${eachBillet.journeeDu}">...</option>
+                        <option data-th-each="eachTournoi : ${tournoiList}" data-th-text="${eachTournoi.Nom_tournoi}">...</option>
                     </select>
 
                 </div>
@@ -61,7 +61,7 @@
                     <label for="tournoi">Match :</label>
 
                     <select class="form-control" th:value="${match}" name="tournoi" id="match" >
-                        <option data-th-each="eachBillet : ${billetList}" data-th-text="${eachBillet.journeeDu}">...</option>
+                        <option data-th-each="eachMatchTennis : ${matchTennisList}" data-th-text="${eachMatchTennis.Niveau}">...</option>
                     </select>
 
                 </div>
