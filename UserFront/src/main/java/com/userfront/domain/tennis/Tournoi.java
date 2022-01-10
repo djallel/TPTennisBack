@@ -20,6 +20,11 @@ public class Tournoi {
     @JsonIgnore
     private User user;
 
+    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "billet_id")
+    private Billet billet;
+
+
     public User getUser() {
         return user;
     }
@@ -31,7 +36,7 @@ public class Tournoi {
     @ManyToMany(mappedBy = "tournois")
     private List<Joueur> joueurs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "tournoi", cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
+    @OneToMany(mappedBy = "tournoi", cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<TypeTournoi> typeTournois = new ArrayList<>();
 
     @OneToMany(mappedBy = "tournoi", cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
@@ -54,10 +59,6 @@ public class Tournoi {
 
     @Column(name = "nbre_joueurs_max")
     private String nbre_joueurs_max;
-
-    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "billet_billet_id")
-    private Billet billet;
 
     public Billet getBillet() {
         return billet;

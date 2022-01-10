@@ -75,7 +75,7 @@ public class BillleterieController {
                                 @ModelAttribute("location") String location,
                                 @ModelAttribute("place") String place,
                                 @ModelAttribute("billet") Billet billet,
-                                @ModelAttribute("tournoi") String tournoi,
+                                @ModelAttribute("tournoi") Tournoi tournoi,
                                 @ModelAttribute("matchTennis") String matchTennis,
 
                                 Principal principal) throws ParseException {
@@ -84,6 +84,9 @@ public class BillleterieController {
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date d1 = format1.parse( date );
         billet.setJourneeDu(d1);
+
+
+
         System.out.println("testtest d1 :" +d1);
 
         System.out.println("testtest categorieBilletForm_AManipuler :" +categorieBilletForm_AManipuler);
@@ -105,8 +108,6 @@ public class BillleterieController {
         billet.setCategorieBillets(categorieBillets);
 
 
-
-
         System.out.println("testtest location :" +location);
         System.out.println("testtest place :" +place);
         System.out.println("testtest billet :" +billet);
@@ -115,12 +116,23 @@ public class BillleterieController {
         System.out.println("testtest billet.getPrixBillet :" +billet.getPrixBillet());
 
         User user = userService.findByUsername(principal.getName());
-/*        recipient.setUser(user);
+/*      recipient.setUser(user);
         transactionService.saveRecipient(recipient);*/
 
         billet.setUser(user);
+
+        List<Tournoi> tournoiList = new ArrayList<>();
+        Tournoi tournoiObject = new Tournoi();
+        tournoiObject.setNom_tournoi(tournoi.getNom_tournoi());
+        tournoiObject.setUser(user);
+        tournoiList.add(tournoiObject);
+
         categorieBillet.setBillet(billet);
-        billetService.saveBillet(billet);
+
+        billet.setTournois(tournoiList);
+        Billet billet1 = billetService.saveBillet(billet);
+        tournoiObject.setBillet(billet1);
+        tournoiService.saveTournoi(tournoiObject);
 
 
 

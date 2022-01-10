@@ -49,18 +49,18 @@
                 </div>
                 <!--Tournoi-->
                 <div class="form-group">
-                    <label for="tournoi">Tournoi :</label>
+                    <label for="tournoiNom_tournoi">Tournoi :</label>
 
-                    <select class="form-control" th:value="${tournoi}" name="tournoi" id="tournoi" >
+                    <select class="form-control" th:value="${Nom_tournoi}" name="Nom_tournoi" id="tournoiNom_tournoi" >
                         <option data-th-each="eachTournoi : ${tournoiList}" data-th-text="${eachTournoi.Nom_tournoi}">...</option>
                     </select>
 
                 </div>
                 <!--Match concerné-->
                 <div class="form-group">
-                    <label for="tournoi">Match :</label>
+                    <label for="matchTennis">Match :</label>
 
-                    <select class="form-control" th:value="${match}" name="tournoi" id="match" >
+                    <select class="form-control" th:value="${matchTennis}" name="matchTennis" id="matchTennis" >
                         <option data-th-each="eachMatchTennis : ${matchTennisList}" data-th-text="${eachMatchTennis.Niveau}">...</option>
                     </select>
 
