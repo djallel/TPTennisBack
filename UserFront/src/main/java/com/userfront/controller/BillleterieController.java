@@ -71,12 +71,12 @@ public class BillleterieController {
     @RequestMapping(value = "/billeterie/save", method = RequestMethod.POST)
     public String billetPost(@ModelAttribute("recipient") Recipient recipient,
                                 @ModelAttribute("categorieBilletForm") String categorieBilletForm,
-                                @ModelAttribute("journeeDuu") String date,
+                                @ModelAttribute("journeeDu") String date,
                                 @ModelAttribute("location") String location,
                                 @ModelAttribute("place") String place,
                                 @ModelAttribute("billet") Billet billet,
                                 @ModelAttribute("tournoi") Tournoi tournoi,
-                                @ModelAttribute("matchTennis") String matchTennis,
+                                @ModelAttribute("matchTennis") MatchTennis matchTennis,
 
                                 Principal principal) throws ParseException {
 
@@ -134,19 +134,44 @@ public class BillleterieController {
         tournoiObject.setBillet(billet1);
         tournoiService.saveTournoi(tournoiObject);
 
+        //Ajout match tennis
+        List<MatchTennis> matchTennisList = new ArrayList<>();
+        MatchTennis matchTennisObject = new MatchTennis();
+        matchTennisObject.setNiveau(matchTennis.getNiveau());
+        matchTennisObject.setUser(user);
+        matchTennisObject.setBillet(billet1);
+        matchTennisList.add(matchTennisObject);
+        matchTennisService.saveMatchTennis(matchTennisObject);
+
 
 
         return "redirect:/showbilleterie/billeterie";
     }
 
     @RequestMapping(value = "/billeterie/edit", method = RequestMethod.GET)
-    public String billetEdit(@RequestParam(value = "recipientName") String recipientName, Model model, Principal principal){
+    public String billetEdit(
+                             @RequestParam(value = "billetId") String billetId,
+                             Model model, Principal principal){
 
-        Recipient recipient = transactionService.findRecipientByName(recipientName);
+        //Recipient recipient = transactionService.findRecipientByName(recipientName);
         List<Recipient> recipientList = transactionService.findRecipientList(principal);
 
-        model.addAttribute("recipientList", recipientList);
-        model.addAttribute("recipient", recipient);
+        List<Billet> billetList = billetService.findBilletList(principal);
+        List<Tournoi> tournoiList = tournoiService.findTournoiList(principal);
+        List<MatchTennis> matchTennisList = matchTennisService.findMatchTennisList(principal);
+
+        Billet billet = billetService.findByBilletId(Long.valueOf(billetId));
+        Tournoi tournoi = tournoiService.findTournoiByBilletId(Long.valueOf(billetId));
+        MatchTennis matchTennis =  matchTennisService.findMatchTennisByBilletId(Long.valueOf(billetId));
+
+        model.addAttribute("billetList", billetList);
+        model.addAttribute("billet", billet);
+
+        model.addAttribute("tournoiList", tournoiList);
+        model.addAttribute("tournoi", tournoi);
+
+        model.addAttribute("matchTennisList", matchTennisList);
+        model.addAttribute("matchTennis", matchTennis);
 
         return "billeterie";
     }

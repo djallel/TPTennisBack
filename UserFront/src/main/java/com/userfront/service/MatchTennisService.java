@@ -15,4 +15,5 @@ public interface MatchTennisService {
     public List<MatchTennis> findMatchTennisList(Principal principal) ;
 
 
+    MatchTennis findMatchTennisByBilletId(Long valueOf);
 }
