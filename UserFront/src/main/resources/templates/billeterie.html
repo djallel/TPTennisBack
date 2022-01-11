@@ -25,11 +25,11 @@
 
                 <!--Journée du :-->
                 <div class="form-group">
-                    <label for="journeeDuu">Journée du :</label>
+                    <label for="billetJourneeDu">Journée du :</label>
                     <div class="input-append date form_datetime input-group" data-date="2016-10-21T15:25:00Z">
                         <input class="form-control" type="text" value="" readonly="readonly"
-                               th:value="${journeeDuu}" name="journeeDuu"
-                               id="journeeDuu" required="required"/>
+                               th:value="${billet.journeeDu}" name="journeeDu"
+                               id="billetJourneeDu" required="required"/>
                         <span class="input-group-addon"><i class="fa fa-times" aria-hidden="true"></i></span>
                         <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                     </div>
@@ -38,30 +38,39 @@
                 <!--Nombre de places-->
                 <div class="form-group">
                     <label for="billetNbreplace">Nombre de place</label>
-                    <input type="text" class="form-control" th:value="${nbreplace}" name="nbreplace"
+                    <input type="text" class="form-control" th:value="${billet.nbreplace}" name="nbreplace"
                            id="billetNbreplace" placeholder="Nombre de place"/>
                 </div>
                 <!--Prix-->
                 <div class="form-group">
                     <label for="billetPrixBillet">Prix :</label>
-                    <input type="text" class="form-control" th:value="${prixBillet}" name="prixBillet"
+                    <input type="text" class="form-control" th:value="${billet.prixBillet}" name="prixBillet"
                            id="billetPrixBillet" placeholder="Prix du billet"/>
                 </div>
+
+
+                <!--<div class="form-group">
+                    <label for="recipientName">Name</label>
+                    <input type="text" class="form-control" th:value="${recipient.name}" name="name"
+                           id="recipientName" placeholder="Name"/>
+                </div>-->
+
+
                 <!--Tournoi-->
                 <div class="form-group">
-                    <label for="tournoi">Tournoi :</label>
+                    <label for="tournoiNom_tournoi">Tournoi :</label>
 
-                    <select class="form-control" th:value="${tournoi}" name="tournoi" id="tournoi" >
-                        <option data-th-each="eachBillet : ${billetList}" data-th-text="${eachBillet.journeeDu}">...</option>
+                    <select class="form-control" th:value="${Nom_tournoi}" name="Nom_tournoi" id="tournoiNom_tournoi" >
+                        <option data-th-each="eachTournoi : ${tournoiList}" data-th-text="${eachTournoi.Nom_tournoi}">...</option>
                     </select>
 
                 </div>
                 <!--Match concerné-->
                 <div class="form-group">
-                    <label for="tournoi">Match :</label>
+                    <label for="matchTennisNiveau">Match :</label>
 
-                    <select class="form-control" th:value="${match}" name="tournoi" id="match" >
-                        <option data-th-each="eachBillet : ${billetList}" data-th-text="${eachBillet.journeeDu}">...</option>
+                    <select class="form-control" th:value="${Niveau}" name="Niveau" id="matchTennisNiveau" >
+                        <option data-th-each="eachMatchTennis : ${matchTennisList}" data-th-text="${eachMatchTennis.Niveau}">...</option>
                     </select>
 
                 </div>
@@ -144,6 +153,7 @@
                 <tbody>
                 <tr data-th-each="eachBillet : ${billetList}">
                     <!--<td><a data-th-text="${eachBillet.name}" th:href="@{/showbilleterie/billeterie/edit?recipientName=}+${eachBillet.name}">...</a></td>-->
+                    <td><a data-th-text="${eachBillet.id}" th:href="@{/showbilleterie/billeterie/edit?billetId=}+${eachBillet.id}">...</a></td>
                     <td data-th-text="${eachBillet.journeeDu}">...</td>
                     <td data-th-text="${eachBillet.nbreplace}">...</td>
                     <td data-th-text="${eachBillet.prixBillet}">...</td>

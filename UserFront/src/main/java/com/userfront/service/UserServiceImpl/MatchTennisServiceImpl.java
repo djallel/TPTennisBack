@@ -77,5 +77,10 @@ public class MatchTennisServiceImpl implements MatchTennisService {
         return matchTennisList;
     }
 
+    @Override
+    public  MatchTennis findMatchTennisByBilletId(Long billetId){
+        return  billetDao.findById(billetId).getMatchTennises().get(0);
+    }
+
 
 }

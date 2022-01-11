@@ -77,5 +77,10 @@ public class TournoiServiceImpl implements TournoiService {
         return tournoiList;
     }
 
+    @Override
+    public Tournoi findTournoiByBilletId(Long billetId) {
+        return billetDao.findById(billetId).getTournois().get(0);
+    }
+
 
 }

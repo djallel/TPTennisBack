@@ -6,10 +6,10 @@ import com.userfront.domain.SavingsAccount;
 import com.userfront.domain.User;
 import com.userfront.domain.tennis.Billet;
 import com.userfront.domain.tennis.CategorieBillet;
+import com.userfront.domain.tennis.MatchTennis;
+import com.userfront.domain.tennis.Tournoi;
 import com.userfront.enumeration.CategorieBilletEnum;
-import com.userfront.service.BilletService;
-import com.userfront.service.TransactionService;
-import com.userfront.service.UserService;
+import com.userfront.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,17 +37,33 @@ public class BillleterieController {
     private BilletService billetService;
 
     @Autowired
+    private TournoiService tournoiService;
+
+    @Autowired
+    private MatchTennisService matchTennisService;
+
+    @Autowired
     private UserService userService;
 
 
     @RequestMapping(value = "/billeterie", method = RequestMethod.GET)
     public String billet(Model model, Principal principal) {
         List<Billet> billetList = billetService.findBilletList(principal);
+        List<Tournoi> tournoiList = tournoiService.findTournoiList(principal);
+        List<MatchTennis> matchTennisList = matchTennisService.findMatchTennisList(principal);
 
         Billet billet = new Billet();
+        Tournoi tournoi = new Tournoi();
+        MatchTennis matchTennis = new MatchTennis();
 
         model.addAttribute("billetList", billetList);
         model.addAttribute("billet", billet);
+
+        model.addAttribute("tournoiList", tournoiList);
+        model.addAttribute("tournoi", tournoi);
+
+        model.addAttribute("matchTennisList", matchTennisList);
+        model.addAttribute("matchTennis", matchTennis);
 
         return "billeterie";
     }
@@ -55,13 +71,12 @@ public class BillleterieController {
     @RequestMapping(value = "/billeterie/save", method = RequestMethod.POST)
     public String billetPost(@ModelAttribute("recipient") Recipient recipient,
                                 @ModelAttribute("categorieBilletForm") String categorieBilletForm,
-                                @ModelAttribute("journeeDuu") String date,
+                                @ModelAttribute("journeeDu") String date,
                                 @ModelAttribute("location") String location,
                                 @ModelAttribute("place") String place,
                                 @ModelAttribute("billet") Billet billet,
-                                @ModelAttribute("tournoi") String tournoi,
-
-
+                                @ModelAttribute("tournoi") Tournoi tournoi,
+                                @ModelAttribute("matchTennis") MatchTennis matchTennis,
 
                                 Principal principal) throws ParseException {
 
@@ -69,6 +84,9 @@ public class BillleterieController {
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date d1 = format1.parse( date );
         billet.setJourneeDu(d1);
+
+
+
         System.out.println("testtest d1 :" +d1);
 
         System.out.println("testtest categorieBilletForm_AManipuler :" +categorieBilletForm_AManipuler);
@@ -90,8 +108,6 @@ public class BillleterieController {
         billet.setCategorieBillets(categorieBillets);
 
 
-
-
         System.out.println("testtest location :" +location);
         System.out.println("testtest place :" +place);
         System.out.println("testtest billet :" +billet);
@@ -100,12 +116,32 @@ public class BillleterieController {
         System.out.println("testtest billet.getPrixBillet :" +billet.getPrixBillet());
 
         User user = userService.findByUsername(principal.getName());
-/*        recipient.setUser(user);
+/*      recipient.setUser(user);
         transactionService.saveRecipient(recipient);*/
 
         billet.setUser(user);
+
+        List<Tournoi> tournoiList = new ArrayList<>();
+        Tournoi tournoiObject = new Tournoi();
+        tournoiObject.setNom_tournoi(tournoi.getNom_tournoi());
+        tournoiObject.setUser(user);
+        tournoiList.add(tournoiObject);
+
         categorieBillet.setBillet(billet);
-        billetService.saveBillet(billet);
+
+        billet.setTournois(tournoiList);
+        Billet billet1 = billetService.saveBillet(billet);
+        tournoiObject.setBillet(billet1);
+        tournoiService.saveTournoi(tournoiObject);
+
+        //Ajout match tennis
+        List<MatchTennis> matchTennisList = new ArrayList<>();
+        MatchTennis matchTennisObject = new MatchTennis();
+        matchTennisObject.setNiveau(matchTennis.getNiveau());
+        matchTennisObject.setUser(user);
+        matchTennisObject.setBillet(billet1);
+        matchTennisList.add(matchTennisObject);
+        matchTennisService.saveMatchTennis(matchTennisObject);
 
 
 
@@ -113,13 +149,29 @@ public class BillleterieController {
     }
 
     @RequestMapping(value = "/billeterie/edit", method = RequestMethod.GET)
-    public String billetEdit(@RequestParam(value = "recipientName") String recipientName, Model model, Principal principal){
+    public String billetEdit(
+                             @RequestParam(value = "billetId") String billetId,
+                             Model model, Principal principal){
 
-        Recipient recipient = transactionService.findRecipientByName(recipientName);
+        //Recipient recipient = transactionService.findRecipientByName(recipientName);
         List<Recipient> recipientList = transactionService.findRecipientList(principal);
 
-        model.addAttribute("recipientList", recipientList);
-        model.addAttribute("recipient", recipient);
+        List<Billet> billetList = billetService.findBilletList(principal);
+        List<Tournoi> tournoiList = tournoiService.findTournoiList(principal);
+        List<MatchTennis> matchTennisList = matchTennisService.findMatchTennisList(principal);
+
+        Billet billet = billetService.findByBilletId(Long.valueOf(billetId));
+        Tournoi tournoi = tournoiService.findTournoiByBilletId(Long.valueOf(billetId));
+        MatchTennis matchTennis =  matchTennisService.findMatchTennisByBilletId(Long.valueOf(billetId));
+
+        model.addAttribute("billetList", billetList);
+        model.addAttribute("billet", billet);
+
+        model.addAttribute("tournoiList", tournoiList);
+        model.addAttribute("tournoi", tournoi);
+
+        model.addAttribute("matchTennisList", matchTennisList);
+        model.addAttribute("matchTennis", matchTennis);
 
         return "billeterie";
     }

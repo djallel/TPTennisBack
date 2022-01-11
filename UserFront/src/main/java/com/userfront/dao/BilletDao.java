@@ -2,6 +2,7 @@ package com.userfront.dao;
 
 import java.util.List;
 
+import com.userfront.domain.tennis.Tournoi;
 import org.springframework.data.repository.CrudRepository;
 
 import com.userfront.domain.tennis.Billet;
