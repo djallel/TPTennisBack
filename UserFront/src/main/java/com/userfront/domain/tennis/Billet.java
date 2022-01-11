@@ -28,8 +28,6 @@ public class Billet {
     @Column(name = "prix_billet", precision = 19, scale = 2)
     private BigDecimal prixBillet;
 
-    @OneToMany(mappedBy = "billet", cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
-    private List<Tournoi> tournois = new ArrayList<>();
 
     @OneToMany(mappedBy = "billet", cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
     private List<MatchTennis> matchTennises = new ArrayList<>();
@@ -44,6 +42,17 @@ public class Billet {
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
+
+    @OneToMany(mappedBy = "billet", cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<Tournoi> tournois = new ArrayList<>();
+
+    public List<Tournoi> getTournois() {
+        return tournois;
+    }
+
+    public void setTournois(List<Tournoi> tournois) {
+        this.tournois = tournois;
+    }
 
     public User getUser() {
         return user;
@@ -77,13 +86,6 @@ public class Billet {
         this.matchTennises = matchTennises;
     }
 
-    public List<Tournoi> getTournois() {
-        return tournois;
-    }
-
-    public void setTournois(List<Tournoi> tournois) {
-        this.tournois = tournois;
-    }
 
     public BigDecimal getPrixBillet() {
         return prixBillet;
@@ -121,7 +123,7 @@ public class Billet {
         return id;
     }
 
-    public void setId(Long billetId) {
-        this.id = billetId;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

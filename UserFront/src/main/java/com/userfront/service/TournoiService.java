@@ -14,6 +14,7 @@ public interface TournoiService {
     public Tournoi findTournoiById(Long id) ;
     public void deleteTournoiById(Long id);
     public List<Tournoi> findTournoiList(Principal principal) ;
+    public Tournoi findTournoiByBilletId(Long id);
 
 
 
