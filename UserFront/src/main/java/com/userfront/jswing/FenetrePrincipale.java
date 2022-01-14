@@ -21,7 +21,7 @@ public class FenetrePrincipale {
     public JTextField textFieldEmail;
     public JTextField textFieldNumLicence;
     public JButton enregistrerButton;
-    public JTable table1;
+    public JTable tableJoueur;
     public JButton mettreÀJourButton;
     public JButton supprimerButton;
     public JButton rechercheButton;
@@ -31,6 +31,17 @@ public class FenetrePrincipale {
     public JTextArea textAreaDescription;
     public JLabel descriptionLabel;
     public JPanel MainJoueur;
+    private JTextField txtArbitreNom;
+    private JTextField txtArbitreEmail;
+    private JTextField txtArbitreTelephone;
+    private JTextField txtArbitreNumLicence;
+    private JTextArea txtArbitreDescription;
+    private JTable tableArbitre;
+    private JTextField txtArbitreSearch;
+    private JButton enregistrerArbitreButton;
+    private JButton mettreAJourArbitreButton;
+    private JButton supprimerArbitreButton;
+    private JButton rechercheArbitreButton;
     public CommonSwing commonSwing = new CommonSwing();
     public PreparedStatement pst;
 
@@ -85,8 +96,35 @@ public class FenetrePrincipale {
 
             }
         });
+        enregistrerArbitreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                enregistrerArbitreJDBC();
+            }
+        });
+        mettreAJourArbitreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mettreAJourArbitreJDBC();
+            }
+        });
+        supprimerArbitreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                supprimerArbitreJDBC();
+            }
+        });
+        rechercheArbitreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rechercherArbitreJDBC();
+            }
+        });
     }
 
+    /**
+     * Joueur
+     */
     public void supprimerJoueurJDBC() {
         String joueurId = textFieldSearch.getText();
 
@@ -97,7 +135,7 @@ public class FenetrePrincipale {
 
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Record Deleteeeeee!!!!!");
-            commonSwing.table_load(table1);
+            commonSwing.table_load_joueur(tableJoueur);
 
             textFieldNumLicence.setText("");
             textAreaDescription.setText("");
@@ -143,7 +181,7 @@ public class FenetrePrincipale {
             pst.setString(6, joueur_id);
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Record updated!!!!!");
-            commonSwing.table_load(table1);
+            commonSwing.table_load_joueur(tableJoueur);
             textFieldNumLicence.setText("");
             textAreaDescription.setText("");
             textFieldEmail.setText("");
@@ -222,7 +260,7 @@ public class FenetrePrincipale {
             pst.setString(5, joueur_phone);
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Record Addedddd!!!!!");
-            commonSwing.table_load(table1);
+            commonSwing.table_load_joueur(tableJoueur);
             textFieldNumLicence.setText("");
             textAreaDescription.setText("");
             textFieldEmail.setText("");
@@ -238,5 +276,159 @@ public class FenetrePrincipale {
         }
     }
 
+
+    /**
+     * Arbitre
+     */
+
+    public void supprimerArbitreJDBC() {
+        String arbitreId = txtArbitreSearch.getText();
+
+        try {
+            pst = commonSwing.getCon().prepareStatement("delete from onlinebanking.arbitre  where id = ?");
+
+            pst.setString(1, arbitreId);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Arbitre supprimé!");
+            commonSwing.table_load_arbitre(tableArbitre);
+
+            txtArbitreNumLicence.setText("");
+            txtArbitreDescription.setText("");
+            txtArbitreEmail.setText("");
+            txtArbitreNom.setText("");
+            txtArbitreTelephone.setText("");
+            txtArbitreNom.requestFocus();
+
+
+        }
+
+        catch (SQLException e1)
+        {
+
+            e1.printStackTrace();
+        }
+    }
+
+    public void mettreAJourArbitreJDBC() {
+        String arbitre_name;
+        String arbitre_email;
+        String arbitre_phone ;
+        String arbitre_numLicence;
+        String arbitre_description;
+        String arbitre_id;
+
+        arbitre_name=txtArbitreNom.getText();
+        arbitre_email=txtArbitreEmail.getText();
+        arbitre_phone=txtArbitreTelephone.getText();
+        arbitre_numLicence=txtArbitreNumLicence.getText();
+        arbitre_description=txtArbitreDescription.getText();
+        arbitre_id=txtArbitreSearch.getText();
+
+
+        try {
+            pst = commonSwing.getCon().prepareStatement("update onlinebanking.arbitre set num_licence = ?,description = ?,email = ?,name = ?,phone = ? where id = ?");
+            //num_licence,description,email,name,phone)
+            pst.setString(1, arbitre_numLicence);
+            pst.setString(2, arbitre_description);
+            pst.setString(3, arbitre_email);
+            pst.setString(4, arbitre_name);
+            pst.setString(5, arbitre_phone);
+            pst.setString(6, arbitre_id);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Arbitre updated!!!!!");
+            commonSwing.table_load_arbitre(tableArbitre);
+            txtArbitreNumLicence.setText("");
+            txtArbitreDescription.setText("");
+            txtArbitreEmail.setText("");
+            txtArbitreNom.setText("");
+            txtArbitreTelephone.setText("");
+            txtArbitreNom.requestFocus();
+        }
+
+        catch (SQLException e1)
+        {
+            e1.printStackTrace();
+        }
+    }
+
+    public void rechercherArbitreJDBC() {
+        try {
+
+            String arbitreId = txtArbitreSearch.getText();
+
+            pst = commonSwing.getCon().prepareStatement("select num_licence,description,email,name,phone from onlinebanking.arbitre where id = ?");
+            pst.setString(1, arbitreId);
+            ResultSet rs = pst.executeQuery();
+
+            if(rs.next()==true)
+            {
+                String num_licence = rs.getString(1);
+                String description = rs.getString(2);
+                String email = rs.getString(3);
+                String name = rs.getString(4);
+                String phone = rs.getString(5);
+
+                txtArbitreNumLicence.setText(num_licence);
+                txtArbitreDescription.setText(description);
+                txtArbitreEmail.setText(email);
+                txtArbitreNom.setText(name);
+                txtArbitreTelephone.setText(phone);
+
+            }
+            else
+            {
+                txtArbitreNumLicence.setText("");
+                txtArbitreDescription.setText("");
+                txtArbitreEmail.setText("");
+                txtArbitreNom.setText("");
+                txtArbitreTelephone.setText("");
+                JOptionPane.showMessageDialog(null,"Invalid arbitre No");
+
+            }
+        }
+        catch (SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    public void enregistrerArbitreJDBC() {
+        String arbitre_name;
+        String arbitre_email;
+        String arbitre_phone ;
+        String arbitre_numLicence;
+        String arbitre_description;
+
+        arbitre_name=txtArbitreNom.getText();
+        arbitre_email=txtArbitreEmail.getText();
+        arbitre_phone=txtArbitreTelephone.getText();
+        arbitre_numLicence=txtArbitreNumLicence.getText();
+        arbitre_description=txtArbitreDescription.getText();
+
+        try {
+            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.arbitre(num_licence,description,email,name,phone)values(?,?,?,?,?)");
+            pst.setString(1, arbitre_numLicence);
+            pst.setString(2, arbitre_description);
+            pst.setString(3, arbitre_email);
+            pst.setString(4, arbitre_name);
+            pst.setString(5, arbitre_phone);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Arbitre ajouté !");
+            commonSwing.table_load_arbitre(tableArbitre);
+            txtArbitreNumLicence.setText("");
+            txtArbitreDescription.setText("");
+            txtArbitreEmail.setText("");
+            txtArbitreNom.setText("");
+            txtArbitreTelephone.setText("");
+            txtArbitreNom.requestFocus();
+        }
+
+        catch (SQLException e1)
+        {
+
+            e1.printStackTrace();
+        }
+    }
 
 }

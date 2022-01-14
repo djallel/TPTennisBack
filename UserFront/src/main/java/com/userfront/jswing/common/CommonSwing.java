@@ -28,11 +28,25 @@ public class CommonSwing {
     public CommonSwing() {
     }
 
-    public void table_load(JTable table1)
+    public void table_load_joueur(JTable table1)
     {
         try
         {
             pst = this.getCon().prepareStatement("select * from onlinebanking.joueur");
+            ResultSet rs = pst.executeQuery();
+            table1.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void table_load_arbitre(JTable table1)
+    {
+        try
+        {
+            pst = this.getCon().prepareStatement("select * from onlinebanking.arbitre");
             ResultSet rs = pst.executeQuery();
             table1.setModel(DbUtils.resultSetToTableModel(rs));
         }
