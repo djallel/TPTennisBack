@@ -81,14 +81,6 @@ public class FenetrePrincipale extends JFrame{
     private JPanel jpanelTypeTournoi;
     public CommonSwing commonSwing = new CommonSwing();
     public PreparedStatement pst;
-    @Autowired
-    static TournoiService tournoiService ;
-    @Autowired
-    static TypeTournoiService typeTournoiService ;
-    @Autowired
-    static TournoiDao tournoiDao;
-    @Autowired
-    static TypeTournoiDao typeTournoiDao ;
 
 
 Calendar cldDebut = Calendar.getInstance();
@@ -98,9 +90,6 @@ Calendar cldFin = Calendar.getInstance();
 
     public static void main(String[] args) {
 
-
-        tournoiService = new TournoiServiceImpl();
-         typeTournoiService = new TypeTournoiServiceImpl();
 
         JFrame frame = new JFrame("Application Tennis");
         frame.setContentPane(new FenetrePrincipale().Main);
