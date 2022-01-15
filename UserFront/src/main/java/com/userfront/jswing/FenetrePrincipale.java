@@ -1,5 +1,6 @@
 package com.userfront.jswing;
 
+import com.toedter.calendar.*;
 import com.userfront.jswing.common.CommonSwing;
 
 import javax.swing.*;
@@ -7,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-public class FenetrePrincipale {
+public class FenetrePrincipale extends JFrame{
     public JPanel Main;
     public JTabbedPane tabbedPaneJoueur;
     public JTabbedPane tabbedPaneTournoi;
@@ -42,10 +43,15 @@ public class FenetrePrincipale {
     private JButton mettreAJourArbitreButton;
     private JButton supprimerArbitreButton;
     private JButton rechercheArbitreButton;
+    private JTextField textField1;
+    private JPanel jpanelTournoi;
+    private JPanel paneldate;
+    private JPanel jpanelTypeTournoi;
     public CommonSwing commonSwing = new CommonSwing();
     public PreparedStatement pst;
 
 
+     JDateChooser JDateChooser1 =new JDateChooser();
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("Application Tennis");
@@ -54,8 +60,8 @@ public class FenetrePrincipale {
         frame.pack();
         frame.setVisible(true);
     }
-
     public FenetrePrincipale() {
+        paneldate.add(JDateChooser1);
         commonSwing.connect();
         enregistrerButton.addActionListener(new ActionListener() {
             @Override
