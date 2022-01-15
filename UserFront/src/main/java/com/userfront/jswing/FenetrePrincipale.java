@@ -143,7 +143,7 @@ Calendar cldFin = Calendar.getInstance();
             @Override
             public void actionPerformed(ActionEvent e) {
                 GetJComboBox();
-                SetJComboBox(2);
+                SetJComboBox(1);
             }
         });
     }
