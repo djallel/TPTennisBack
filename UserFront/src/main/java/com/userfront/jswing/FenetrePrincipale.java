@@ -7,6 +7,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class FenetrePrincipale extends JFrame{
     public JPanel Main;
@@ -45,13 +49,16 @@ public class FenetrePrincipale extends JFrame{
     private JButton rechercheArbitreButton;
     private JTextField textField1;
     private JPanel jpanelTournoi;
-    private JPanel paneldate;
+    private JPanel jPaneldateDebutTournoi;
+    private JPanel jPanelDateFinTournoi;
     private JPanel jpanelTypeTournoi;
     public CommonSwing commonSwing = new CommonSwing();
     public PreparedStatement pst;
 
-
-     JDateChooser JDateChooser1 =new JDateChooser();
+Calendar cldDebut = Calendar.getInstance();
+Calendar cldFin = Calendar.getInstance();
+     JDateChooser JDateChooserDateDebutTournoi =new JDateChooser(cldDebut.getTime());
+     JDateChooser JDateChooserDateFinTournoi =new JDateChooser(cldFin.getTime());
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("Application Tennis");
@@ -61,7 +68,12 @@ public class FenetrePrincipale extends JFrame{
         frame.setVisible(true);
     }
     public FenetrePrincipale() {
-        paneldate.add(JDateChooser1);
+        JDateChooserDateDebutTournoi.setDateFormatString("dd/MM/yyyy");
+        jPaneldateDebutTournoi.add(JDateChooserDateDebutTournoi);
+        GetDate();
+        JDateChooserDateFinTournoi.setDateFormatString("dd/MM/yyyy");
+        SetDate(JDateChooserDateFinTournoi);
+        jPanelDateFinTournoi.add(JDateChooserDateFinTournoi);
         commonSwing.connect();
         enregistrerButton.addActionListener(new ActionListener() {
             @Override
@@ -126,6 +138,23 @@ public class FenetrePrincipale extends JFrame{
                 rechercherArbitreJDBC();
             }
         });
+    }
+
+    private void GetDate() {
+        SimpleDateFormat sdfmt = new SimpleDateFormat("dd/MM/yyyy");
+        String dt=sdfmt.format(JDateChooserDateDebutTournoi.getDate());
+        System.out.println(dt);
+    }
+
+    private  void SetDate(JDateChooser JDateChooserDateFinTournoi){
+        SimpleDateFormat sdfmt = new SimpleDateFormat("dd/MM/yyyy");
+        String dt ="01/01/2022";
+        try {
+            Date date = sdfmt.parse(dt);
+            JDateChooserDateFinTournoi.setDate(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -437,4 +466,7 @@ public class FenetrePrincipale extends JFrame{
         }
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
