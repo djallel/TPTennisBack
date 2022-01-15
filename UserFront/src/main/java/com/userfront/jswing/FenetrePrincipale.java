@@ -51,6 +51,7 @@ public class FenetrePrincipale extends JFrame{
     private JPanel jpanelTournoi;
     private JPanel jPaneldateDebutTournoi;
     private JPanel jPanelDateFinTournoi;
+    private JComboBox comboBox1;
     private JPanel jpanelTypeTournoi;
     public CommonSwing commonSwing = new CommonSwing();
     public PreparedStatement pst;
@@ -138,8 +139,26 @@ Calendar cldFin = Calendar.getInstance();
                 rechercherArbitreJDBC();
             }
         });
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GetJComboBox();
+                SetJComboBox(2);
+            }
+        });
     }
 
+    void GetJComboBox(){
+        comboBox1.getSelectedItem();
+        comboBox1.getItemAt(comboBox1.getSelectedIndex());
+        System.out.println(comboBox1.getSelectedIndex());
+        System.out.println(comboBox1.getItemAt(comboBox1.getSelectedIndex()));
+    }
+
+    void SetJComboBox (Integer index ){
+        comboBox1.setSelectedIndex(index);
+        System.out.println(comboBox1.getItemAt(comboBox1.getSelectedIndex()));
+    }
     private void GetDate() {
         SimpleDateFormat sdfmt = new SimpleDateFormat("dd/MM/yyyy");
         String dt=sdfmt.format(JDateChooserDateDebutTournoi.getDate());
@@ -156,6 +175,8 @@ Calendar cldFin = Calendar.getInstance();
             e.printStackTrace();
         }
     }
+
+
 
     /**
      * Joueur

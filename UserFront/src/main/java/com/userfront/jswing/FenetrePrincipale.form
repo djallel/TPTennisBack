@@ -332,6 +332,18 @@
                         <border type="none"/>
                         <children/>
                       </grid>
+                      <component id="c6d50" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                        <constraints>
+                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <model>
+                            <item value="Simple"/>
+                            <item value="Qualification"/>
+                            <item value="Tour"/>
+                          </model>
+                        </properties>
+                      </component>
                     </children>
                   </grid>
                 </children>
