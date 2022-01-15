@@ -1,7 +1,18 @@
 package com.userfront.jswing;
 
 import com.toedter.calendar.*;
+import com.userfront.dao.TournoiDao;
+import com.userfront.dao.TypeTournoiDao;
+import com.userfront.domain.tennis.Tournoi;
+import com.userfront.domain.tennis.TypeTournoi;
 import com.userfront.jswing.common.CommonSwing;
+import com.userfront.service.TournoiService;
+import com.userfront.service.TypeTournoiService;
+import com.userfront.service.UserServiceImpl.TournoiServiceImpl;
+import com.userfront.service.UserServiceImpl.TypeTournoiServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -9,8 +20,14 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import static javafx.application.Application.launch;
 
 public class FenetrePrincipale extends JFrame{
     public JPanel Main;
@@ -51,25 +68,39 @@ public class FenetrePrincipale extends JFrame{
     private JPanel jpanelTournoi;
     private JPanel jPaneldateDebutTournoi;
     private JPanel jPanelDateFinTournoi;
-    private JComboBox comboBox1;
+    private JComboBox comboBoxTypeTournoi;
     private JButton enregistrerTournoiButton;
     private JButton mettreAJourTourniButton;
     private JButton supprimerTournoiButton;
     private JButton rechercheTournoiButton;
-    private JTextField txtRechercheTournoi;
-    private JScrollPane tableTournoi;
+    private JTextField txtSearchTournoi;
     private JTextField txtNbrInscritTournoi;
     private JComboBox comboBoxNombreDeTourTournoi;
     private JTextField txtNombreDeJoueurTournoi;
+    private JTable tableTournoi;
     private JPanel jpanelTypeTournoi;
     public CommonSwing commonSwing = new CommonSwing();
     public PreparedStatement pst;
+    @Autowired
+    static TournoiService tournoiService ;
+    @Autowired
+    static TypeTournoiService typeTournoiService ;
+    @Autowired
+    static TournoiDao tournoiDao;
+    @Autowired
+    static TypeTournoiDao typeTournoiDao ;
+
 
 Calendar cldDebut = Calendar.getInstance();
 Calendar cldFin = Calendar.getInstance();
      JDateChooser JDateChooserDateDebutTournoi =new JDateChooser(cldDebut.getTime());
      JDateChooser JDateChooserDateFinTournoi =new JDateChooser(cldFin.getTime());
+
     public static void main(String[] args) {
+
+
+        tournoiService = new TournoiServiceImpl();
+         typeTournoiService = new TypeTournoiServiceImpl();
 
         JFrame frame = new JFrame("Application Tennis");
         frame.setContentPane(new FenetrePrincipale().Main);
@@ -80,9 +111,9 @@ Calendar cldFin = Calendar.getInstance();
     public FenetrePrincipale() {
         JDateChooserDateDebutTournoi.setDateFormatString("dd/MM/yyyy");
         jPaneldateDebutTournoi.add(JDateChooserDateDebutTournoi);
-        GetDate();
+        getJDateChooserDateDebutTournoi();
         JDateChooserDateFinTournoi.setDateFormatString("dd/MM/yyyy");
-        SetDate(JDateChooserDateFinTournoi);
+        setJDateChooserDateDebutTournoi("01/01/2022");
         jPanelDateFinTournoi.add(JDateChooserDateFinTournoi);
         commonSwing.connect();
         enregistrerButton.addActionListener(new ActionListener() {
@@ -148,37 +179,108 @@ Calendar cldFin = Calendar.getInstance();
                 rechercherArbitreJDBC();
             }
         });
-        comboBox1.addActionListener(new ActionListener() {
+        comboBoxTypeTournoi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GetJComboBox();
-                SetJComboBox(1);
+                getJcomboBoxTypeTournoi();
+                setJcomboBoxTypeTournoi(1);
+            }
+        });
+        mettreAJourTourniButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mettreAJourTournoiJDBC();
+            }
+        });
+        supprimerTournoiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                supprimerTournoiJDBC();
+            }
+        });
+        rechercheTournoiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rechercherTournoiJDBC();
+            }
+        });
+        enregistrerTournoiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                enregistrerTournoiJDBC();
             }
         });
     }
 
-    void GetJComboBox(){
-        comboBox1.getSelectedItem();
-        comboBox1.getItemAt(comboBox1.getSelectedIndex());
-        System.out.println(comboBox1.getSelectedIndex());
-        System.out.println(comboBox1.getItemAt(comboBox1.getSelectedIndex()));
+    String getJcomboBoxTypeTournoi(){
+        comboBoxTypeTournoi.getSelectedItem();
+        System.out.println(comboBoxTypeTournoi.getSelectedIndex());
+        System.out.println(comboBoxTypeTournoi.getItemAt(comboBoxTypeTournoi.getSelectedIndex()));
+        return comboBoxTypeTournoi.getItemAt(comboBoxTypeTournoi.getSelectedIndex()).toString();
     }
 
-    void SetJComboBox (Integer index ){
-        comboBox1.setSelectedIndex(index);
-        System.out.println(comboBox1.getItemAt(comboBox1.getSelectedIndex()));
+    void setJcomboBoxTypeTournoi(Integer index ){
+        comboBoxTypeTournoi.setSelectedIndex(index);
+        System.out.println(comboBoxTypeTournoi.getItemAt(comboBoxTypeTournoi.getSelectedIndex()));
     }
-    private void GetDate() {
+
+    public String getJcomboBoxNombreDeTourTournoi(){
+        comboBoxNombreDeTourTournoi.getSelectedItem();
+        System.out.println(comboBoxNombreDeTourTournoi.getSelectedIndex());
+        System.out.println(comboBoxNombreDeTourTournoi.getItemAt(comboBoxNombreDeTourTournoi.getSelectedIndex()));
+        return comboBoxNombreDeTourTournoi.getItemAt(comboBoxNombreDeTourTournoi.getSelectedIndex()).toString();
+    }
+
+    public void setJcomboBoxNombreDeTourTournoi(Integer index ){
+        comboBoxNombreDeTourTournoi.setSelectedIndex(index);
+        System.out.println(comboBoxNombreDeTourTournoi.getItemAt(comboBoxNombreDeTourTournoi.getSelectedIndex()));
+    }
+     public String getJDateChooserDateDebutTournoi() {
         SimpleDateFormat sdfmt = new SimpleDateFormat("dd/MM/yyyy");
+        if (JDateChooserDateDebutTournoi==null || JDateChooserDateDebutTournoi.getDate()==null){
+            setJDateChooserDateDebutTournoi("01/01/2022"); //date par defaut
+            String dt=sdfmt.format(new Date("01/01/2022"));
+            System.out.println(dt);
+            return dt;
+        }
         String dt=sdfmt.format(JDateChooserDateDebutTournoi.getDate());
         System.out.println(dt);
+        return dt;
     }
 
-    private  void SetDate(JDateChooser JDateChooserDateFinTournoi){
+    public void setJDateChooserDateDebutTournoi(String dateDebutTournoi){
         SimpleDateFormat sdfmt = new SimpleDateFormat("dd/MM/yyyy");
-        String dt ="01/01/2022";
         try {
-            Date date = sdfmt.parse(dt);
+            if(dateDebutTournoi==null){
+                dateDebutTournoi="01/01/2022"; //date par defaut
+            }
+            Date date = sdfmt.parse(dateDebutTournoi);
+            JDateChooserDateFinTournoi.setDate(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getJDateChooserDateFinTournoi() {
+        SimpleDateFormat sdfmt = new SimpleDateFormat("dd/MM/yyyy");
+        if (JDateChooserDateFinTournoi==null || JDateChooserDateFinTournoi.getDate()==null){
+            setJDateChooserDateFinTournoi("01/01/2022"); //date par defaut
+            String dt=sdfmt.format(new Date("01/01/2022"));
+            System.out.println(dt);
+            return dt;
+        }
+        String dt=sdfmt.format(JDateChooserDateFinTournoi.getDate());
+        System.out.println(dt);
+        return dt;
+    }
+
+    public void setJDateChooserDateFinTournoi(String dateFinTournoi){
+        SimpleDateFormat sdfmt = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            if(dateFinTournoi==null){
+                dateFinTournoi="01/01/2022"; //date par defaut
+            }
+            Date date = sdfmt.parse(dateFinTournoi);
             JDateChooserDateFinTournoi.setDate(date);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -496,7 +598,248 @@ Calendar cldFin = Calendar.getInstance();
         }
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+    /**
+     * Tournoi
+     */
+
+    public void supprimerTournoiJDBC() {
+        String tournoiId = txtSearchTournoi.getText();
+
+        try {
+            pst = commonSwing.getCon().prepareStatement("delete from onlinebanking.tournoi  where id = ?");
+
+            pst.setString(1, tournoiId);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Tournoi supprimé!");
+            commonSwing.table_load_tournoi(tableTournoi);
+
+            txtNomTournoi.setText("");
+            comboBoxTypeTournoi.setSelectedIndex(0);
+            JDateChooserDateDebutTournoi.setDate(null);
+            JDateChooserDateFinTournoi.setDate(null);
+            txtNbrInscritTournoi.setText("");
+            comboBoxNombreDeTourTournoi.setSelectedIndex(0);
+            txtNombreDeJoueurTournoi.setText("");
+
+            txtNomTournoi.requestFocus();
+
+
+        }
+
+        catch (SQLException e1)
+        {
+
+            e1.printStackTrace();
+        }
     }
+
+    public void mettreAJourTournoiJDBC() {
+        String tournoi_name;
+        String tournoi_typeTournoi;
+        String tournoi_dateDebutTournoi ;
+        String tournoi_dateFinTournoi;
+        String tournoi_nbreInscritTournoi;
+        String tournoi_nbreDeTourTournoi;
+        String tournoi_nbreDeJoueurTournoi;
+        String tournoi_id;
+
+        tournoi_name=txtNomTournoi.getText();
+        tournoi_typeTournoi=getJcomboBoxTypeTournoi();
+        tournoi_dateDebutTournoi=getJDateChooserDateDebutTournoi();
+        tournoi_dateFinTournoi=getJDateChooserDateFinTournoi();
+        tournoi_nbreInscritTournoi=txtNbrInscritTournoi.getText();
+        tournoi_nbreDeTourTournoi=getJcomboBoxNombreDeTourTournoi();
+        tournoi_nbreDeJoueurTournoi=txtNombreDeJoueurTournoi.getText();
+        tournoi_id= txtSearchTournoi.getText();
+
+
+        try {
+           //pst tournoi
+            pst = commonSwing.getCon().prepareStatement("update onlinebanking.tournoi set date_debut_tournoi = ?,date_fin_tournoi = ?,nbr_inscrit = ?,nbr_tour = ?,nbre_joueurs_max = ?,nom_tournoi = ? where id = ?");
+            pst.setString(1, tournoi_dateDebutTournoi);
+            pst.setString(2, tournoi_dateFinTournoi);
+            pst.setString(3, tournoi_nbreInscritTournoi);
+            pst.setString(4, tournoi_nbreDeTourTournoi);
+            pst.setString(5, tournoi_nbreDeJoueurTournoi);
+            pst.setString(6, tournoi_name);
+            pst.setString(7, tournoi_id);
+            pst.executeUpdate();
+
+            pst = commonSwing.getCon().prepareStatement("update onlinebanking.type_tournoi set description_messieur = ? where tournoi_id = ?");
+            pst.setString(1,tournoi_typeTournoi);
+            pst.setString(2,tournoi_id);
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Tournoi et type tournoi mis à jour !");
+            commonSwing.table_load_tournoi(tableTournoi);
+
+
+
+            txtNomTournoi.setText("");
+            setJcomboBoxTypeTournoi(0);
+            setJDateChooserDateDebutTournoi(null);
+            setJDateChooserDateFinTournoi(null);
+            txtNbrInscritTournoi.setText("");
+            setJcomboBoxNombreDeTourTournoi(0);
+            txtNombreDeJoueurTournoi.setText("");
+            txtSearchTournoi.setText("");
+            txtNomTournoi.requestFocus();
+        }
+
+        catch (SQLException e1)
+        {
+            e1.printStackTrace();
+        }
+    }
+
+    public void rechercherTournoiJDBC() {
+        try {
+
+            String tournoiId = txtSearchTournoi.getText();
+
+            pst = commonSwing.getCon().prepareStatement("" +
+                    "SELECT tournoi.nom_tournoi as 'Nom du tournoi', " +
+                    "tournoi.date_debut_tournoi as 'Date de debut',   " +
+                    "tournoi.date_fin_tournoi as 'Date de fin',  " +
+                    "tournoi.nbr_inscrit as 'Nombre inscrit',     " +
+                    "tournoi.nbr_tour as 'nombre de tour' ," +
+                    "tournoi.nbre_joueurs_max as 'nombre de joueur max'," +
+                    "type_tournoi.description_messieur as 'Type de tournoi' FROM onlinebanking.tournoi    INNER JOIN onlinebanking.type_tournoi ON tournoi.id = type_tournoi.tournoi_id where tournoi.id = ?");
+            pst.setString(1, tournoiId);
+            ResultSet rs = pst.executeQuery();
+
+            if(rs.next()==true)
+            {
+                String nom_tournoi = rs.getString(1);
+                String date_debut_tournoi = rs.getString(2);
+                String date_fin_tournoi = rs.getString(3);
+                String nbr_inscrit = rs.getString(4);
+                String nbr_tour = rs.getString(5);
+                String nbre_joueurs_max = rs.getString(6);
+                String description_messieur = rs.getString(7);
+
+
+                txtNomTournoi.setText(nom_tournoi);
+                setJDateChooserDateDebutTournoi(date_debut_tournoi);
+                setJDateChooserDateFinTournoi(date_fin_tournoi);
+                if(description_messieur.equalsIgnoreCase("Simple messieurs")){
+
+                    setJcomboBoxTypeTournoi(0);
+                }
+                if(description_messieur.equalsIgnoreCase("Double messieurs")){
+
+                    setJcomboBoxTypeTournoi(1);
+                }
+                txtNbrInscritTournoi.setText(nbr_inscrit);
+                setJcomboBoxNombreDeTourTournoi(Integer.parseInt(nbr_tour)-1);
+                txtNombreDeJoueurTournoi.setText(nbre_joueurs_max);
+                txtSearchTournoi.setText(tournoiId);
+                txtNomTournoi.requestFocus();
+
+
+            }
+            else
+            {
+                txtNomTournoi.setText("");
+                setJcomboBoxTypeTournoi(0);
+                setJDateChooserDateDebutTournoi(null);
+                setJDateChooserDateFinTournoi(null);
+                txtNbrInscritTournoi.setText("");
+                setJcomboBoxNombreDeTourTournoi(0);
+                txtNombreDeJoueurTournoi.setText("");
+                txtSearchTournoi.setText("");
+                txtNomTournoi.requestFocus();
+                JOptionPane.showMessageDialog(null,"Invalid tournoi No");
+
+            }
+        }
+        catch (SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    public void enregistrerTournoiJDBC() {
+
+        String tournoi_name;
+        String tournoi_typeTournoi;
+        String tournoi_dateDebutTournoi ;
+        String tournoi_dateFinTournoi;
+        String tournoi_nbreInscritTournoi;
+        String tournoi_nbreDeTourTournoi;
+        String tournoi_nbreDeJoueurTournoi;
+        String tournoi_id;
+
+        tournoi_name=txtNomTournoi.getText();
+        tournoi_typeTournoi=getJcomboBoxTypeTournoi();
+        tournoi_dateDebutTournoi=getJDateChooserDateDebutTournoi();
+        tournoi_dateFinTournoi=getJDateChooserDateFinTournoi();
+        tournoi_nbreInscritTournoi=txtNbrInscritTournoi.getText();
+        tournoi_nbreDeTourTournoi=getJcomboBoxNombreDeTourTournoi();
+        tournoi_nbreDeJoueurTournoi=txtNombreDeJoueurTournoi.getText();
+        tournoi_id= txtSearchTournoi.getText();
+
+
+        try {
+            //insert into tournoi (id, date_debut_tournoi, date_fin_tournoi, nbr_inscrit, nbr_tour, nbre_joueurs_max, nom_tournoi )
+            //values ()
+            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.tournoi( date_debut_tournoi, date_fin_tournoi, nbr_inscrit, nbr_tour, nbre_joueurs_max, nom_tournoi )values(?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            pst.setString(1, tournoi_dateDebutTournoi);
+            pst.setString(2, tournoi_dateFinTournoi);
+            pst.setString(3, tournoi_nbreInscritTournoi);
+            pst.setString(4, tournoi_nbreDeTourTournoi);
+            pst.setString(5, tournoi_nbreDeJoueurTournoi);
+            pst.setString(6, tournoi_name);
+            pst.executeUpdate();
+
+            ResultSet rs = pst.getGeneratedKeys();
+            String tournoi_id_generated="";
+            if (rs.next()){
+                 tournoi_id_generated = rs.getString(1);
+            }
+            
+            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.type_tournoi(description_messieur, tournoi_id) values (?,?) ",Statement.RETURN_GENERATED_KEYS);
+            pst.setString(1, tournoi_typeTournoi);
+            pst.setString(2, tournoi_id_generated);
+            pst.executeUpdate();
+
+           /* Tournoi tournoiToSave = new Tournoi();
+            tournoiToSave.setDate_debut_tournoi(LocalDate.parse(tournoi_dateDebutTournoi, DateTimeFormatter.ofPattern("d/MM/yyyy")));
+            tournoiToSave.setDate_fin_tournoi(LocalDate.parse(tournoi_dateFinTournoi, DateTimeFormatter.ofPattern("d/MM/yyyy")));
+            tournoiToSave.setNbr_inscrit(tournoi_nbreInscritTournoi);
+            tournoiToSave.setNbr_tour(tournoi_nbreDeTourTournoi);
+            tournoiToSave.setNbre_joueurs_max(tournoi_nbreDeJoueurTournoi);
+            tournoiToSave.setNom_tournoi(tournoi_name);
+            Tournoi tournoiSaved = tournoiService.saveTournoi(tournoiToSave);
+
+            List<TypeTournoi> typeTournoisListToSave = new ArrayList<>();
+            TypeTournoi typeTournoiToSave = new TypeTournoi();
+            typeTournoiToSave.setDescription_messieur(tournoi_typeTournoi);
+            typeTournoiToSave.setTournoi(tournoiSaved);
+            typeTournoisListToSave.add(typeTournoiToSave);
+            tournoiSaved.setTypeTournois(typeTournoisListToSave);
+            TypeTournoi typeTournoiSaved = typeTournoiService.saveTypeTournoi(typeTournoiToSave);*/
+
+            JOptionPane.showMessageDialog(null, "Tournoi et Type Tournoi ajouté !");
+            commonSwing.table_load_tournoi(tableTournoi);
+            txtNomTournoi.setText("");
+            setJcomboBoxTypeTournoi(0);
+            setJDateChooserDateDebutTournoi(null);
+            setJDateChooserDateFinTournoi(null);
+            txtNbrInscritTournoi.setText("");
+            setJcomboBoxNombreDeTourTournoi(0);
+            txtNombreDeJoueurTournoi.setText("");
+            txtSearchTournoi.setText("");
+            txtNomTournoi.requestFocus();
+        }
+
+        catch (Exception e1)
+        {
+
+            e1.printStackTrace();
+        }
+    }
+
+
 }
