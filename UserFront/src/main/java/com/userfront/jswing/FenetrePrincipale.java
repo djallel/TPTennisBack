@@ -645,19 +645,21 @@ Calendar cldFin = Calendar.getInstance();
 
         try {
            //pst tournoi
-            pst = commonSwing.getCon().prepareStatement("update onlinebanking.tournoi set date_debut_tournoi = ?,date_fin_tournoi = ?,nbr_inscrit = ?,nbr_tour = ?,nbre_joueurs_max = ?,nom_tournoi = ? where id = ?");
+            pst = commonSwing.getCon().prepareStatement("update onlinebanking.tournoi set date_debut_tournoi = ?,date_fin_tournoi = ?,nbr_inscrit = ?,nbr_tour = ?,nbre_joueurs_max = ?,nom_tournoi = ?,user_id =? where id = ?");
             pst.setString(1, tournoi_dateDebutTournoi);
             pst.setString(2, tournoi_dateFinTournoi);
             pst.setString(3, tournoi_nbreInscritTournoi);
             pst.setString(4, tournoi_nbreDeTourTournoi);
             pst.setString(5, tournoi_nbreDeJoueurTournoi);
             pst.setString(6, tournoi_name);
-            pst.setString(7, tournoi_id);
+            pst.setString(7, "3");
+            pst.setString(8, tournoi_id);
             pst.executeUpdate();
 
-            pst = commonSwing.getCon().prepareStatement("update onlinebanking.type_tournoi set description_messieur = ? where tournoi_id = ?");
+            pst = commonSwing.getCon().prepareStatement("update onlinebanking.type_tournoi set description_messieur = ?,user_id=? where tournoi_id = ?");
             pst.setString(1,tournoi_typeTournoi);
-            pst.setString(2,tournoi_id);
+            pst.setString(2,"3");
+            pst.setString(3,tournoi_id);
             pst.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Tournoi et type tournoi mis à jour !");
@@ -749,6 +751,15 @@ Calendar cldFin = Calendar.getInstance();
         }
     }
 
+    Date convertStringToDate(String sDate1){
+
+        try {
+            return new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public void enregistrerTournoiJDBC() {
 
         String tournoi_name;
@@ -762,8 +773,12 @@ Calendar cldFin = Calendar.getInstance();
 
         tournoi_name=txtNomTournoi.getText();
         tournoi_typeTournoi=getJcomboBoxTypeTournoi();
+
         tournoi_dateDebutTournoi=getJDateChooserDateDebutTournoi();
+        java.sql.Date tournoi_dateDebutTournoi_sql = new java.sql.Date(convertStringToDate(getJDateChooserDateDebutTournoi()).getTime());
+
         tournoi_dateFinTournoi=getJDateChooserDateFinTournoi();
+        java.sql.Date tournoi_dateFinTournoi_sql = new java.sql.Date(convertStringToDate(getJDateChooserDateFinTournoi()).getTime());
         tournoi_nbreInscritTournoi=txtNbrInscritTournoi.getText();
         tournoi_nbreDeTourTournoi=getJcomboBoxNombreDeTourTournoi();
         tournoi_nbreDeJoueurTournoi=txtNombreDeJoueurTournoi.getText();
@@ -773,13 +788,14 @@ Calendar cldFin = Calendar.getInstance();
         try {
             //insert into tournoi (id, date_debut_tournoi, date_fin_tournoi, nbr_inscrit, nbr_tour, nbre_joueurs_max, nom_tournoi )
             //values ()
-            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.tournoi( date_debut_tournoi, date_fin_tournoi, nbr_inscrit, nbr_tour, nbre_joueurs_max, nom_tournoi )values(?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-            pst.setString(1, tournoi_dateDebutTournoi);
-            pst.setString(2, tournoi_dateFinTournoi);
+            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.tournoi( date_debut_tournoi, date_fin_tournoi, nbr_inscrit, nbr_tour, nbre_joueurs_max, nom_tournoi,user_id )values(?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            pst.setDate(1, (java.sql.Date) tournoi_dateDebutTournoi_sql);
+            pst.setDate(2, (java.sql.Date) tournoi_dateFinTournoi_sql);
             pst.setString(3, tournoi_nbreInscritTournoi);
             pst.setString(4, tournoi_nbreDeTourTournoi);
             pst.setString(5, tournoi_nbreDeJoueurTournoi);
             pst.setString(6, tournoi_name);
+            pst.setString(7, "3");
             pst.executeUpdate();
 
             ResultSet rs = pst.getGeneratedKeys();
@@ -788,27 +804,12 @@ Calendar cldFin = Calendar.getInstance();
                  tournoi_id_generated = rs.getString(1);
             }
             
-            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.type_tournoi(description_messieur, tournoi_id) values (?,?) ",Statement.RETURN_GENERATED_KEYS);
+            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.type_tournoi(description_messieur, tournoi_id,user_id) values (?,?,?) ",Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, tournoi_typeTournoi);
             pst.setString(2, tournoi_id_generated);
+            pst.setString(3, "3");
             pst.executeUpdate();
 
-           /* Tournoi tournoiToSave = new Tournoi();
-            tournoiToSave.setDate_debut_tournoi(LocalDate.parse(tournoi_dateDebutTournoi, DateTimeFormatter.ofPattern("d/MM/yyyy")));
-            tournoiToSave.setDate_fin_tournoi(LocalDate.parse(tournoi_dateFinTournoi, DateTimeFormatter.ofPattern("d/MM/yyyy")));
-            tournoiToSave.setNbr_inscrit(tournoi_nbreInscritTournoi);
-            tournoiToSave.setNbr_tour(tournoi_nbreDeTourTournoi);
-            tournoiToSave.setNbre_joueurs_max(tournoi_nbreDeJoueurTournoi);
-            tournoiToSave.setNom_tournoi(tournoi_name);
-            Tournoi tournoiSaved = tournoiService.saveTournoi(tournoiToSave);
-
-            List<TypeTournoi> typeTournoisListToSave = new ArrayList<>();
-            TypeTournoi typeTournoiToSave = new TypeTournoi();
-            typeTournoiToSave.setDescription_messieur(tournoi_typeTournoi);
-            typeTournoiToSave.setTournoi(tournoiSaved);
-            typeTournoisListToSave.add(typeTournoiToSave);
-            tournoiSaved.setTypeTournois(typeTournoisListToSave);
-            TypeTournoi typeTournoiSaved = typeTournoiService.saveTypeTournoi(typeTournoiToSave);*/
 
             JOptionPane.showMessageDialog(null, "Tournoi et Type Tournoi ajouté !");
             commonSwing.table_load_tournoi(tableTournoi);
