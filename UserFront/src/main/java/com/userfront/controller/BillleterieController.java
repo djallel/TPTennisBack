@@ -4,10 +4,7 @@ import com.userfront.domain.PrimaryAccount;
 import com.userfront.domain.Recipient;
 import com.userfront.domain.SavingsAccount;
 import com.userfront.domain.User;
-import com.userfront.domain.tennis.Billet;
-import com.userfront.domain.tennis.CategorieBillet;
-import com.userfront.domain.tennis.MatchTennis;
-import com.userfront.domain.tennis.Tournoi;
+import com.userfront.domain.tennis.*;
 import com.userfront.enumeration.CategorieBilletEnum;
 import com.userfront.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +38,15 @@ public class BillleterieController {
 
     @Autowired
     private MatchTennisService matchTennisService;
+
+    @Autowired
+    private EmplacementService emplacementService;
+
+    @Autowired
+    private CategorieBilletService categorieBilletService;
+
+    @Autowired
+    private CategoriePlaceService categoriePlaceService;
 
     @Autowired
     private UserService userService;
@@ -166,10 +172,16 @@ public class BillleterieController {
         List<Billet> billetList = billetService.findBilletList(principal);
         List<Tournoi> tournoiList = tournoiService.findTournoiList(principal);
         List<MatchTennis> matchTennisList = matchTennisService.findMatchTennisList(principal);
+        List<Emplacement> emplacementList = emplacementService.findEmplacementList(principal);
+        List<CategorieBillet> categorieBilletList = categorieBilletService.findCategorieBilletList(principal);
+        List<CategoriePlace> categoriePlaceList = categoriePlaceService.findCategoriePlaceList(principal);
 
         Billet billet = billetService.findByBilletId(Long.valueOf(billetId));
         Tournoi tournoi = tournoiService.findTournoiByBilletId(Long.valueOf(billetId));
         MatchTennis matchTennis =  matchTennisService.findMatchTennisByBilletId(Long.valueOf(billetId));
+        Emplacement emplacement =  emplacementService.findEmplacementByBilletId(Long.valueOf(billetId));
+        CategorieBillet categorieBillet =  categorieBilletService.findCategorieBilletByBilletId(Long.valueOf(billetId));
+        CategoriePlace categoriePlace =  categoriePlaceService.findCategoriePlaceByBilletId(Long.valueOf(billetId));
 
         model.addAttribute("billetList", billetList);
         model.addAttribute("billet", billet);
@@ -179,6 +191,15 @@ public class BillleterieController {
 
         model.addAttribute("matchTennisList", matchTennisList);
         model.addAttribute("matchTennis", matchTennis);
+
+        model.addAttribute("emplacementList", emplacementList);
+        model.addAttribute("emplacement", emplacement);
+
+        model.addAttribute("categorieBilletList", categorieBilletList);
+        model.addAttribute("categorieBillet", categorieBillet);
+
+        model.addAttribute("categoriePlaceList", categoriePlaceList);
+        model.addAttribute("categoriePlace", categoriePlace);
 
         return "billeterie";
     }
