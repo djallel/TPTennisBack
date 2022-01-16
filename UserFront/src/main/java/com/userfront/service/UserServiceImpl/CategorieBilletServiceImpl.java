@@ -75,7 +75,10 @@ public class CategorieBilletServiceImpl implements CategorieBilletService {
 
     @Override
     public CategorieBillet findCategorieBilletByBilletId(Long billetId) {
-        return billetDao.findById(billetId).getCategorieBillets().get(0);
+        if(!billetDao.findById(billetId).getCategorieBillets().isEmpty()){
+            return billetDao.findById(billetId).getCategorieBillets().get(0);
+        }
+        return new CategorieBillet();
     }
 
 

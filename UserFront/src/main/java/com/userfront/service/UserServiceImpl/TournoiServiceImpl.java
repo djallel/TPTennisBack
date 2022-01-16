@@ -79,7 +79,10 @@ public class TournoiServiceImpl implements TournoiService {
 
     @Override
     public Tournoi findTournoiByBilletId(Long billetId) {
-        return billetDao.findById(billetId).getTournois().get(0);
+        if(!billetDao.findById(billetId).getTournois().isEmpty()){
+            return billetDao.findById(billetId).getTournois().get(0);
+        }
+        return new Tournoi();
     }
 
 

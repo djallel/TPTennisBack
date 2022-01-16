@@ -80,13 +80,19 @@ public class TypeTournoiServiceImpl implements TypeTournoiService {
 
     @Override
     public TypeTournoi findTypeTournoiByBilletId(Long billetId) {
-        return billetDao.findById(billetId).getTournois().get(0).getTypeTournois().get(0);
+        if(!billetDao.findById(billetId).getTournois().isEmpty() && !billetDao.findById(billetId).getTournois().get(0).getTypeTournois().isEmpty()){
+            return billetDao.findById(billetId).getTournois().get(0).getTypeTournois().get(0);
+        }
+        return new TypeTournoi();
     }
 
 
     @Override
     public TypeTournoi findTypeTournoiByTournoiId(Long tournoiId) {
-        return tournoiDao.findById(tournoiId).getTypeTournois().get(0);
+        if (!tournoiDao.findById(tournoiId).getTypeTournois().isEmpty()) {
+            return tournoiDao.findById(tournoiId).getTypeTournois().get(0);
+        }
+        return new TypeTournoi();
     }
 
 }

@@ -75,7 +75,10 @@ public class CategoriePlaceServiceImpl implements CategoriePlaceService {
 
     @Override
     public CategoriePlace findCategoriePlaceByBilletId(Long billetId) {
-        return billetDao.findById(billetId).getCategoriePlaces().get(0);
+        if(!billetDao.findById(billetId).getCategoriePlaces().isEmpty()){
+            return billetDao.findById(billetId).getCategoriePlaces().get(0);
+        }
+        return new CategoriePlace();
     }
 
 

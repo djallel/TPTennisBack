@@ -76,7 +76,10 @@ public class EmplacementServiceImpl implements EmplacementService {
 
     @Override
     public Emplacement findEmplacementByBilletId(Long billetId) {
-        return billetDao.findById(billetId).getEmplacements().get(0);
+        if (!billetDao.findById(billetId).getEmplacements().isEmpty()){
+            return billetDao.findById(billetId).getEmplacements().get(0);
+        }
+        return new Emplacement();
     }
 
 

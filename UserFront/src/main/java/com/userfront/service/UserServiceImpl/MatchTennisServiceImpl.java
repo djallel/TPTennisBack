@@ -79,7 +79,11 @@ public class MatchTennisServiceImpl implements MatchTennisService {
 
     @Override
     public  MatchTennis findMatchTennisByBilletId(Long billetId){
-        return  billetDao.findById(billetId).getMatchTennises().get(0);
+        if(!billetDao.findById(billetId).getMatchTennises().isEmpty()){
+
+            return  billetDao.findById(billetId).getMatchTennises().get(0);
+        }
+        return  new MatchTennis();
     }
 
 
