@@ -142,11 +142,13 @@
             <table class="table table-bordered table-hover table-striped">
                 <thead>
                 <tr>
-                    <th>Recipient Name</th>
-                    <th>Recipient Email</th>
-                    <th>Recipient Phone</th>
-                    <th>Recipient Account Number</th>
-                    <th>Description</th>
+                    <th>N° Billet</th>
+                    <th>Journee du</th>
+                    <th>Nombre de place</th>
+                    <th>Prix billet</th>
+                    <th>Niveau de match</th>
+                    <th>Categorie billet</th>
+                    <th>Emplacement</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -157,7 +159,11 @@
                     <td data-th-text="${eachBillet.journeeDu}">...</td>
                     <td data-th-text="${eachBillet.nbreplace}">...</td>
                     <td data-th-text="${eachBillet.prixBillet}">...</td>
-                    <td data-th-text="${eachBillet.user}">...</td>
+                    <td data-th-text="${eachBillet.matchTennises[0].niveau}">...</td>
+                    <td data-th-text="${eachBillet.tournois[0].nom_tournoi}">...</td>
+                    <td data-th-text="${eachBillet.categorieBillets[0].categorieBilletEnumString}">...</td>
+                    <td data-th-text="${eachBillet.emplacements[0].libelle}">...</td>
+                   <!-- <td><a th:href="@{/showbilleterie/billeterie/delete?recipientName=}+${eachBillet.name}">delete</a></td>-->
                    <!-- <td><a th:href="@{/showbilleterie/billeterie/delete?recipientName=}+${eachBillet.name}">delete</a></td>-->
                 </tr>
                 </tbody>

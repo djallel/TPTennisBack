@@ -52,6 +52,13 @@ public class BillleterieController {
         List<Tournoi> tournoiList = tournoiService.findTournoiList(principal);
         List<MatchTennis> matchTennisList = matchTennisService.findMatchTennisList(principal);
 
+        //Nom match
+      /*  String nomMatch = billetList.get(0).getMatchTennises().get(0).getNiveau();
+        String nomTournoi= billetList.get(0).getTournois().get(0).getNom_tournoi();
+        String categorieBillet = billetList.get(0).getCategorieBillets().get(0).getCategorieBilletEnumString();
+        String emplacement = billetList.get(0).getEmplacements().get(0).getLibelle();*/
+
+
         Billet billet = new Billet();
         Tournoi tournoi = new Tournoi();
         MatchTennis matchTennis = new MatchTennis();
