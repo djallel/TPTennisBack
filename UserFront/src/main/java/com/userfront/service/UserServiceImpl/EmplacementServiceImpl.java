@@ -1,22 +1,19 @@
 package com.userfront.service.UserServiceImpl;
 
 import com.userfront.dao.*;
-import com.userfront.domain.*;
-import com.userfront.domain.tennis.*;
-import com.userfront.service.TournoiService;
-import com.userfront.service.TransactionService;
+import com.userfront.domain.tennis.Emplacement;
+import com.userfront.service.EmplacementService;
+import com.userfront.service.EmplacementService;
 import com.userfront.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TournoiServiceImpl implements TournoiService {
+public class EmplacementServiceImpl implements EmplacementService {
 	
 	@Autowired
 	private UserService userService;
@@ -40,7 +37,7 @@ public class TournoiServiceImpl implements TournoiService {
     private BilletDao billetDao;
 
     @Autowired
-    private TournoiDao tournoiDao;
+    private EmplacementDao emplacementDao;
 
     @Autowired
     private MatchTennisDao matchTennisDao;
@@ -53,36 +50,36 @@ public class TournoiServiceImpl implements TournoiService {
 
 
     @Override
-    public Tournoi saveTournoi(Tournoi tournoi) {
-        return tournoiDao.save(tournoi);
+    public Emplacement saveEmplacement(Emplacement emplacement) {
+        return emplacementDao.save(emplacement);
     }
 
     @Override
-    public Tournoi findTournoiById(Long id) {
-        return tournoiDao.findById(id);
+    public Emplacement findEmplacementById(Long id) {
+        return emplacementDao.findById(id);
     }
 
     @Override
-    public void deleteTournoiById(Long id) {
-        tournoiDao.deleteById(id);
+    public void deleteEmplacementById(Long id) {
+        emplacementDao.deleteById(id);
     }
 
     @Override
-    public List<Tournoi> findTournoiList(Principal principal) {
+    public List<Emplacement> findEmplacementList(Principal principal) {
         String username = principal.getName();
-        List<Tournoi> tournoiList = tournoiDao.findAll().stream() 			//convert list to stream
+        List<Emplacement> emplacementList = emplacementDao.findAll().stream() 			//convert list to stream
                 .filter(billet -> username.equals(billet.getUser().getUsername()))	//filters the line, equals to username
                 .collect(Collectors.toList());
 
-        return tournoiList;
+        return emplacementList;
     }
 
     @Override
-    public Tournoi findTournoiByBilletId(Long billetId) {
-        if(!billetDao.findById(billetId).getTournois().isEmpty()){
-            return billetDao.findById(billetId).getTournois().get(0);
+    public Emplacement findEmplacementByBilletId(Long billetId) {
+        if (!billetDao.findById(billetId).getEmplacements().isEmpty()){
+            return billetDao.findById(billetId).getEmplacements().get(0);
         }
-        return new Tournoi();
+        return new Emplacement();
     }
 
 

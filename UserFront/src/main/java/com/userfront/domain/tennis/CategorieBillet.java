@@ -1,5 +1,7 @@
 package com.userfront.domain.tennis;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.userfront.domain.User;
 import com.userfront.enumeration.CategorieBilletEnum;
 
 import javax.persistence.*;
@@ -16,7 +18,18 @@ public class CategorieBillet {
     @ManyToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "billet_id")
     private Billet billet;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
     @Column(name = "categorie_billet_enum_string")
     private String categorieBilletEnumString;
 
