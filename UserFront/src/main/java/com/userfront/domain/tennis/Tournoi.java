@@ -6,6 +6,7 @@ import com.userfront.domain.User;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -43,10 +44,10 @@ public class Tournoi {
     private List<DateTournoi> dateTournois = new ArrayList<>();
 
     @Column(name = "date_debut_tournoi")
-    private LocalDate date_debut_tournoi;
+    private Date date_debut_tournoi;
 
     @Column(name = "date_fin_tournoi")
-    private LocalDate date_fin_tournoi;
+    private Date date_fin_tournoi;
 
     @Column(name = "nom_tournoi")
     private String nom_tournoi;
@@ -100,19 +101,19 @@ public class Tournoi {
         this.nom_tournoi = nom_tournoi;
     }
 
-    public LocalDate getDate_fin_tournoi() {
+    public Date getDate_fin_tournoi() {
         return date_fin_tournoi;
     }
 
-    public void setDate_fin_tournoi(LocalDate date_fin_tournoi) {
+    public void setDate_fin_tournoi(Date date_fin_tournoi) {
         this.date_fin_tournoi = date_fin_tournoi;
     }
 
-    public LocalDate getDate_debut_tournoi() {
+    public Date getDate_debut_tournoi() {
         return date_debut_tournoi;
     }
 
-    public void setDate_debut_tournoi(LocalDate date_debut_tournoi) {
+    public void setDate_debut_tournoi(Date date_debut_tournoi) {
         this.date_debut_tournoi = date_debut_tournoi;
     }
 

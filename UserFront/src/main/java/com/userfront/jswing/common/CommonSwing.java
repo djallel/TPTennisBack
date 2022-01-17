@@ -56,6 +56,20 @@ public class CommonSwing {
         }
     }
 
+    public void table_load_tournoi(JTable table1)
+    {
+        try
+        {
+            pst = this.getCon().prepareStatement("select * from onlinebanking.tournoi");
+            ResultSet rs = pst.executeQuery();
+            table1.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void connect (){
         try {
             Class.forName("com.mysql.jdbc.Driver");

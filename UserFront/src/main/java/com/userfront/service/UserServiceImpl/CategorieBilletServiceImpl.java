@@ -1,22 +1,18 @@
 package com.userfront.service.UserServiceImpl;
 
 import com.userfront.dao.*;
-import com.userfront.domain.*;
-import com.userfront.domain.tennis.*;
-import com.userfront.service.TournoiService;
-import com.userfront.service.TransactionService;
+import com.userfront.domain.tennis.CategorieBillet;
+import com.userfront.service.CategorieBilletService;
 import com.userfront.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TournoiServiceImpl implements TournoiService {
+public class CategorieBilletServiceImpl implements CategorieBilletService {
 	
 	@Autowired
 	private UserService userService;
@@ -40,7 +36,7 @@ public class TournoiServiceImpl implements TournoiService {
     private BilletDao billetDao;
 
     @Autowired
-    private TournoiDao tournoiDao;
+    private CategorieBilletDao categorieBilletDao;
 
     @Autowired
     private MatchTennisDao matchTennisDao;
@@ -53,36 +49,36 @@ public class TournoiServiceImpl implements TournoiService {
 
 
     @Override
-    public Tournoi saveTournoi(Tournoi tournoi) {
-        return tournoiDao.save(tournoi);
+    public CategorieBillet saveCategorieBillet(CategorieBillet categorieBillet) {
+        return categorieBilletDao.save(categorieBillet);
     }
 
     @Override
-    public Tournoi findTournoiById(Long id) {
-        return tournoiDao.findById(id);
+    public CategorieBillet findCategorieBilletById(Long id) {
+        return categorieBilletDao.findById(id);
     }
 
     @Override
-    public void deleteTournoiById(Long id) {
-        tournoiDao.deleteById(id);
+    public void deleteCategorieBilletById(Long id) {
+        categorieBilletDao.deleteById(id);
     }
 
     @Override
-    public List<Tournoi> findTournoiList(Principal principal) {
+    public List<CategorieBillet> findCategorieBilletList(Principal principal) {
         String username = principal.getName();
-        List<Tournoi> tournoiList = tournoiDao.findAll().stream() 			//convert list to stream
+        List<CategorieBillet> categorieBilletList = categorieBilletDao.findAll().stream() 			//convert list to stream
                 .filter(billet -> username.equals(billet.getUser().getUsername()))	//filters the line, equals to username
                 .collect(Collectors.toList());
 
-        return tournoiList;
+        return categorieBilletList;
     }
 
     @Override
-    public Tournoi findTournoiByBilletId(Long billetId) {
-        if(!billetDao.findById(billetId).getTournois().isEmpty()){
-            return billetDao.findById(billetId).getTournois().get(0);
+    public CategorieBillet findCategorieBilletByBilletId(Long billetId) {
+        if(!billetDao.findById(billetId).getCategorieBillets().isEmpty()){
+            return billetDao.findById(billetId).getCategorieBillets().get(0);
         }
-        return new Tournoi();
+        return new CategorieBillet();
     }
 
 
