@@ -206,15 +206,26 @@ public class BillleterieController {
 
     @RequestMapping(value = "/billeterie/delete", method = RequestMethod.GET)
     @Transactional
-    public String billetDelete(@RequestParam(value = "recipientName") String recipientName, Model model, Principal principal){
+    public String billetDelete(
 
-        transactionService.deleteRecipientByName(recipientName);
+            @RequestParam(value = "billetId") String billetId,
+
+                               Model model, Principal principal){
+
+
+        billetService.deleteByBilletId(Long.valueOf(billetId));
+
 
         List<Recipient> recipientList = transactionService.findRecipientList(principal);
+        List<Billet> billetList = billetService.findBilletList(principal);
 
+        Billet billet = new Billet();
         Recipient recipient = new Recipient();
+
         model.addAttribute("recipient", recipient);
         model.addAttribute("recipientList", recipientList);
+        model.addAttribute("billetList", billetList);
+        model.addAttribute("billet", billet);
 
 
         return "billeterie";

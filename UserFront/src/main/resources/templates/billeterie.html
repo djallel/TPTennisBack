@@ -143,7 +143,6 @@
                 <thead>
                 <tr>
                     <th>N° Billet</th>
-                    <th>N° Billet</th>
                     <th>Journee du</th>
                     <th>Nombre de place</th>
                     <th>Prix billet</th>
@@ -151,6 +150,7 @@
                     <th>Nom tournoi</th>
                     <th>Categorie billet</th>
                     <th>Emplacement</th>
+                    <th>Action</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -165,7 +165,7 @@
                     <td data-th-text="${eachBillet.tournois[0].nom_tournoi}">...</td>
                     <td data-th-text="${eachBillet.categorieBillets[0].categorieBilletEnumString}">...</td>
                     <td data-th-text="${eachBillet.emplacements[0].libelle}">...</td>
-                   <!-- <td><a th:href="@{/showbilleterie/billeterie/delete?recipientName=}+${eachBillet.name}">delete</a></td>-->
+                    <td><a th:href="@{/showbilleterie/billeterie/delete?billetId=}+${eachBillet.id}">delete</a></td>
                    <!-- <td><a th:href="@{/showbilleterie/billeterie/delete?recipientName=}+${eachBillet.name}">delete</a></td>-->
                 </tr>
                 </tbody>
