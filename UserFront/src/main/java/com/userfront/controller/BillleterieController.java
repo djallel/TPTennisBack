@@ -57,6 +57,7 @@ public class BillleterieController {
         List<Billet> billetList = billetService.findBilletList(principal);
         List<Tournoi> tournoiList = tournoiService.findTournoiList(principal);
         List<MatchTennis> matchTennisList = matchTennisService.findMatchTennisList(principal);
+        List<Emplacement> emplacementList = emplacementService.findEmplacementList(principal);
 
         //Nom match
       /*  String nomMatch = billetList.get(0).getMatchTennises().get(0).getNiveau();
@@ -68,6 +69,7 @@ public class BillleterieController {
         Billet billet = new Billet();
         Tournoi tournoi = new Tournoi();
         MatchTennis matchTennis = new MatchTennis();
+        Emplacement emplacement = new Emplacement();
 
         model.addAttribute("billetList", billetList);
         model.addAttribute("billet", billet);
@@ -78,33 +80,36 @@ public class BillleterieController {
         model.addAttribute("matchTennisList", matchTennisList);
         model.addAttribute("matchTennis", matchTennis);
 
+        model.addAttribute("emplacementList", emplacementList);
+        model.addAttribute("emplacement", emplacement);
+
         return "billeterie";
     }
 
     @RequestMapping(value = "/billeterie/save", method = RequestMethod.POST)
     public String billetPost(@ModelAttribute("recipient") Recipient recipient,
-                                @ModelAttribute("categorieBilletForm") String categorieBilletForm,
+                                @ModelAttribute("categorieBillet") CategorieBillet categorieBillet,
                                 @ModelAttribute("journeeDu") String date,
                                 @ModelAttribute("location") String location,
                                 @ModelAttribute("place") String place,
                                 @ModelAttribute("billet") Billet billet,
                                 @ModelAttribute("tournoi") Tournoi tournoi,
                                 @ModelAttribute("matchTennis") MatchTennis matchTennis,
+                                @ModelAttribute("emplacement") Emplacement emplacement,
 
                                 Principal principal) throws ParseException {
 
-        String categorieBilletForm_AManipuler = categorieBilletForm;
+        String categorieBilletForm_AManipuler = categorieBillet.getCategorieBilletEnumString();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date d1 = format1.parse( date );
         billet.setJourneeDu(d1);
 
 
 
-        System.out.println("testtest d1 :" +d1);
+        //System.out.println("testtest d1 :" +d1);
 
         System.out.println("testtest categorieBilletForm_AManipuler :" +categorieBilletForm_AManipuler);
         List<CategorieBillet> categorieBillets = new ArrayList<>();
-        CategorieBillet categorieBillet = new CategorieBillet();
         if(categorieBilletForm_AManipuler.equals(CategorieBilletEnum.BILLET_GRAND_PUBLIC_LICENCIE.toString())){
             categorieBillet.setCategorieBilletEnumString(CategorieBilletEnum.BILLET_GRAND_PUBLIC_LICENCIE.categorieBillet);
         }
@@ -155,6 +160,17 @@ public class BillleterieController {
         matchTennisObject.setBillet(billet1);
         matchTennisList.add(matchTennisObject);
         matchTennisService.saveMatchTennis(matchTennisObject);
+
+
+        //Ajout emplacement
+        List<Emplacement> emplacementList = new ArrayList<>();
+        Emplacement emplacementObject = new Emplacement();
+        emplacementObject.setLibelle(emplacement.getLibelle());
+        emplacementObject.setBillet(billet1);
+        emplacementObject.setUser(user);
+        emplacementList.add(emplacementObject);
+        emplacementService.saveEmplacement(emplacementObject);
+
 
 
 
@@ -226,6 +242,7 @@ public class BillleterieController {
         model.addAttribute("recipientList", recipientList);
         model.addAttribute("billetList", billetList);
         model.addAttribute("billet", billet);
+
 
 
         return "billeterie";

@@ -12,13 +12,10 @@
 
                 <!--1. Selectionnez svp la categorie du billet :-->
                 <div class="form-group" >
-                    <label for="categorieBilletForm">1. Selectionnez svp la categorie du billet :</label>
-                    <select class="form-control" th:value="${categorieBilletForm}" name="categorieBilletForm" id="categorieBilletForm" required="required">
-                        <option  disabled="disabled" selected="selected"> -- selectionnez une categorie -- </option>
-                        <option value="BILLET_GRAND_PUBLIC_LICENCIE">Billet grand public licencié </option>
-                        <option value="BILLET_GRAND_PUBLIC_NON_LICENCIE">Billet grand public non licencié </option>
-                        <option value="BILLET_BIG_MATCH_LICENCIE">Billet big match licencié </option>
+                    <label for="categorieBilletCategorieBilletEnumString">1. Selectionnez svp la categorie du billet :</label>
+                    <select class="form-control" th:value="${CategorieBilletEnumString}" name="CategorieBilletEnumString" id="categorieBilletCategorieBilletEnumString" required="required">
                         <option value="BILLET_BIG_MATCH_NON_LICENCIE">Billet big match non licencié</option>
+                        <option data-th-each="eachCategorieBillet : ${CategorieBilletList}" data-th-text="${eachCategorieBillet.CategorieBilletEnumString}">...</option>
                     </select>
                     <br />
                 </div>
@@ -28,7 +25,7 @@
                     <label for="billetJourneeDu">Journée du :</label>
                     <div class="input-append date form_datetime input-group" data-date="2016-10-21T15:25:00Z">
                         <input class="form-control" type="text" value="" readonly="readonly"
-                               th:value="${billet.journeeDu}" name="journeeDu"
+                               th:value="${{billet.journeeDu}}" name="journeeDu"
                                id="billetJourneeDu" required="required"/>
                         <span class="input-group-addon"><i class="fa fa-times" aria-hidden="true"></i></span>
                         <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
@@ -76,14 +73,10 @@
                 </div>
                 <!--Selectionnez un emplacement :-->
                 <div class="form-group">
-                    <label for="emplacement">Selectionnez un emplacement :</label>
-                    <select class="form-control" th:value="${emplacement}" name="emplacement" id="emplacement"
-                    >
-                        <option disabled="disabled" selected="selected" > &#45;&#45; selectionnez un emplacement &#45;&#45;</option>
-                        <option>Court central</option>
-                        <option>Court annexe</option>
+                    <label for="emplacementLibelle">Selectionnez un emplacement :</label>
+                    <select class="form-control" th:value="${Libelle}" name="Libelle" id="emplacementLibelle">
+                        <option data-th-each="eachEmplacement : ${emplacementList}" data-th-text="${eachEmplacement.Libelle}">...</option>
                     </select>
-
                 </div>
 
 

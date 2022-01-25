@@ -2,6 +2,7 @@ package com.userfront.domain.tennis;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.userfront.domain.User;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class Billet {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "journee_du")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date journeeDu;
 
     @Column(name = "nbreplace")
