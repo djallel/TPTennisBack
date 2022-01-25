@@ -1,8 +1,6 @@
 package com.userfront.controller;
 
-import com.userfront.domain.PrimaryAccount;
 import com.userfront.domain.Recipient;
-import com.userfront.domain.SavingsAccount;
 import com.userfront.domain.User;
 import com.userfront.domain.tennis.*;
 import com.userfront.enumeration.CategorieBilletEnum;
@@ -26,9 +24,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/showbilleterie")
 public class BillleterieController {
-
-    @Autowired
-    private TransactionService transactionService;
 
     @Autowired
     private BilletService billetService;
@@ -183,7 +178,6 @@ public class BillleterieController {
                              Model model, Principal principal){
 
         //Recipient recipient = transactionService.findRecipientByName(recipientName);
-        List<Recipient> recipientList = transactionService.findRecipientList(principal);
 
         List<Billet> billetList = billetService.findBilletList(principal);
         List<Tournoi> tournoiList = tournoiService.findTournoiList(principal);
@@ -232,14 +226,11 @@ public class BillleterieController {
         billetService.deleteByBilletId(Long.valueOf(billetId));
 
 
-        List<Recipient> recipientList = transactionService.findRecipientList(principal);
         List<Billet> billetList = billetService.findBilletList(principal);
 
         Billet billet = new Billet();
         Recipient recipient = new Recipient();
 
-        model.addAttribute("recipient", recipient);
-        model.addAttribute("recipientList", recipientList);
         model.addAttribute("billetList", billetList);
         model.addAttribute("billet", billet);
 

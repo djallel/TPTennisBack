@@ -1,17 +1,13 @@
 package com.userfront.service.UserServiceImpl;
 
 import com.userfront.dao.*;
-import com.userfront.domain.*;
 import com.userfront.domain.tennis.*;
 import com.userfront.service.TournoiService;
-import com.userfront.service.TransactionService;
 import com.userfront.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,18 +17,7 @@ public class TournoiServiceImpl implements TournoiService {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private PrimaryTransactionDao primaryTransactionDao;
-	
-	@Autowired
-	private SavingsTransactionDao savingsTransactionDao;
-	
-	@Autowired
-	private PrimaryAccountDao primaryAccountDao;
-	
-	@Autowired
-	private SavingsAccountDao savingsAccountDao;
-	
+
 	@Autowired
 	private RecipientDao recipientDao;
 

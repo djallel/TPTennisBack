@@ -18,18 +18,6 @@ public class CategoriePlaceServiceImpl implements CategoriePlaceService {
 	private UserService userService;
 	
 	@Autowired
-	private PrimaryTransactionDao primaryTransactionDao;
-	
-	@Autowired
-	private SavingsTransactionDao savingsTransactionDao;
-	
-	@Autowired
-	private PrimaryAccountDao primaryAccountDao;
-	
-	@Autowired
-	private SavingsAccountDao savingsAccountDao;
-	
-	@Autowired
 	private RecipientDao recipientDao;
 
     @Autowired
