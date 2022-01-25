@@ -16,29 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `emplacement`
+-- Table structure for table `type_tournoi`
 --
 
-DROP TABLE IF EXISTS `emplacement`;
+DROP TABLE IF EXISTS `type_tournoi`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `emplacement` (
+CREATE TABLE `type_tournoi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `libelle` varchar(255) DEFAULT NULL,
+  `description_messieur` varchar(255) DEFAULT NULL,
+  `tournoi_id` bigint(20) DEFAULT NULL,
   `billet_id` bigint(20) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKf5o3y7vdw0v8uqkxif22av2ie` (`billet_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  KEY `FK2m9v60ecobaq0iviv9upb9nsr` (`billet_id`),
+  KEY `FK8glf7v90frvtjg4ydfambpfg8` (`tournoi_id`),
+  KEY `FK3pyr31nbcbjoithact2i53gxx` (`user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `emplacement`
+-- Dumping data for table `type_tournoi`
 --
 
-LOCK TABLES `emplacement` WRITE;
-/*!40000 ALTER TABLE `emplacement` DISABLE KEYS */;
-INSERT INTO `emplacement` VALUES (1,'Court Central',51),(2,'Court Annexe',50);
-/*!40000 ALTER TABLE `emplacement` ENABLE KEYS */;
+LOCK TABLES `type_tournoi` WRITE;
+/*!40000 ALTER TABLE `type_tournoi` DISABLE KEYS */;
+INSERT INTO `type_tournoi` VALUES (1,'Double messieurs',28,NULL,3),(2,'Simple messieurs',29,NULL,3),(3,'Simple messeieurs',33,NULL,3),(4,'Simple messeieurs',34,NULL,3),(5,'Simple messeieurs',35,NULL,3),(6,'Simple messeieurs',36,NULL,3),(7,'Simple messeieurs',37,NULL,3),(8,'Simple messeieurs',38,NULL,3),(9,'Simple messeieurs',39,NULL,3),(10,'Simple messeieurs',40,NULL,NULL),(11,'Simple messeieurs',41,NULL,NULL),(12,'Simple messeieurs',42,NULL,NULL),(13,'Simple messeieurs',43,NULL,NULL),(14,'Simple messeieurs',44,NULL,NULL),(15,'Double messeieurs',45,NULL,NULL),(16,'Simple messeieurs',46,NULL,3);
+/*!40000 ALTER TABLE `type_tournoi` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-11 12:21:53
+-- Dump completed on 2022-01-17 10:05:33

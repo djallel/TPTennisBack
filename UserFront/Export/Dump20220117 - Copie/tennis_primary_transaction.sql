@@ -16,29 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `emplacement`
+-- Table structure for table `primary_transaction`
 --
 
-DROP TABLE IF EXISTS `emplacement`;
+DROP TABLE IF EXISTS `primary_transaction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `emplacement` (
+CREATE TABLE `primary_transaction` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `libelle` varchar(255) DEFAULT NULL,
-  `billet_id` bigint(20) DEFAULT NULL,
+  `amount` double NOT NULL,
+  `available_balance` decimal(19,2) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `primary_account_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKf5o3y7vdw0v8uqkxif22av2ie` (`billet_id`)
+  KEY `FK643wtfdx6y0e093wlc09csehn` (`primary_account_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `emplacement`
+-- Dumping data for table `primary_transaction`
 --
 
-LOCK TABLES `emplacement` WRITE;
-/*!40000 ALTER TABLE `emplacement` DISABLE KEYS */;
-INSERT INTO `emplacement` VALUES (1,'Court Central',51),(2,'Court Annexe',50);
-/*!40000 ALTER TABLE `emplacement` ENABLE KEYS */;
+LOCK TABLES `primary_transaction` WRITE;
+/*!40000 ALTER TABLE `primary_transaction` DISABLE KEYS */;
+INSERT INTO `primary_transaction` VALUES (1,100,-100.00,'2021-12-20 00:26:49','Between account transfer from Primary to Savings','Finished','Account',3),(2,20,-120.00,'2021-12-20 00:26:58','Withdraw from Primary Account','Finished','Account',3);
+/*!40000 ALTER TABLE `primary_transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-11 12:21:53
+-- Dump completed on 2022-01-17 10:05:35

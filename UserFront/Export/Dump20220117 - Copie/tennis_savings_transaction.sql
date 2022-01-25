@@ -16,29 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `emplacement`
+-- Table structure for table `savings_transaction`
 --
 
-DROP TABLE IF EXISTS `emplacement`;
+DROP TABLE IF EXISTS `savings_transaction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `emplacement` (
+CREATE TABLE `savings_transaction` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `libelle` varchar(255) DEFAULT NULL,
-  `billet_id` bigint(20) DEFAULT NULL,
+  `amount` double NOT NULL,
+  `available_balance` decimal(19,2) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `savings_account_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKf5o3y7vdw0v8uqkxif22av2ie` (`billet_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  KEY `FK4bt1l2090882974glyn79q2s9` (`savings_account_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `emplacement`
+-- Dumping data for table `savings_transaction`
 --
 
-LOCK TABLES `emplacement` WRITE;
-/*!40000 ALTER TABLE `emplacement` DISABLE KEYS */;
-INSERT INTO `emplacement` VALUES (1,'Court Central',51),(2,'Court Annexe',50);
-/*!40000 ALTER TABLE `emplacement` ENABLE KEYS */;
+LOCK TABLES `savings_transaction` WRITE;
+/*!40000 ALTER TABLE `savings_transaction` DISABLE KEYS */;
+INSERT INTO `savings_transaction` VALUES (1,4546,-4546.00,'2022-01-02 17:48:40','Between account transfer from Savings to Primary','Finished','Transfer',3);
+/*!40000 ALTER TABLE `savings_transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-11 12:21:53
+-- Dump completed on 2022-01-17 10:05:34

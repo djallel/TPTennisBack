@@ -16,29 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `emplacement`
+-- Table structure for table `primary_account`
 --
 
-DROP TABLE IF EXISTS `emplacement`;
+DROP TABLE IF EXISTS `primary_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `emplacement` (
+CREATE TABLE `primary_account` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `libelle` varchar(255) DEFAULT NULL,
-  `billet_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKf5o3y7vdw0v8uqkxif22av2ie` (`billet_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `account_balance` decimal(19,2) DEFAULT NULL,
+  `account_number` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `emplacement`
+-- Dumping data for table `primary_account`
 --
 
-LOCK TABLES `emplacement` WRITE;
-/*!40000 ALTER TABLE `emplacement` DISABLE KEYS */;
-INSERT INTO `emplacement` VALUES (1,'Court Central',51),(2,'Court Annexe',50);
-/*!40000 ALTER TABLE `emplacement` ENABLE KEYS */;
+LOCK TABLES `primary_account` WRITE;
+/*!40000 ALTER TABLE `primary_account` DISABLE KEYS */;
+INSERT INTO `primary_account` VALUES (1,0.00,11223146),(2,0.00,11223146),(3,-120.00,11223147),(4,0.00,11223146),(5,0.00,11223147),(6,0.00,11223146),(7,0.00,11223147),(8,4546.00,11223148);
+/*!40000 ALTER TABLE `primary_account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-11 12:21:53
+-- Dump completed on 2022-01-17 10:05:34

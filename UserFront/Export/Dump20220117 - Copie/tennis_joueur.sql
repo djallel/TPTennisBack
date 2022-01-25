@@ -16,29 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `emplacement`
+-- Table structure for table `joueur`
 --
 
-DROP TABLE IF EXISTS `emplacement`;
+DROP TABLE IF EXISTS `joueur`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `emplacement` (
+CREATE TABLE `joueur` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `libelle` varchar(255) DEFAULT NULL,
-  `billet_id` bigint(20) DEFAULT NULL,
+  `num_licence` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKf5o3y7vdw0v8uqkxif22av2ie` (`billet_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  KEY `FKrhy7uycm5gfqomsvc32v3bayf` (`user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `emplacement`
+-- Dumping data for table `joueur`
 --
 
-LOCK TABLES `emplacement` WRITE;
-/*!40000 ALTER TABLE `emplacement` DISABLE KEYS */;
-INSERT INTO `emplacement` VALUES (1,'Court Central',51),(2,'Court Annexe',50);
-/*!40000 ALTER TABLE `emplacement` ENABLE KEYS */;
+LOCK TABLES `joueur` WRITE;
+/*!40000 ALTER TABLE `joueur` DISABLE KEYS */;
+INSERT INTO `joueur` VALUES (1,'111','finaliste','b_yta@yahoo.fr','tabet','8787',3),(2,'azerzetez','qualifié','tabet@yahoo.fr','maria','07898895',NULL),(6,'777','gdgsdgsdgsd','toutou@gmail.com','toutou','77777',NULL),(5,'45445','4\n45\n4544444444444','tabte@yahoo.fr','tabet','5475454',NULL),(7,'toutout','toutout','toutoutou','toutou','toutou',NULL),(9,'','','','','',NULL),(11,'','','','','',NULL),(12,'','','','','',NULL),(13,'','','','','',NULL),(14,'','','','','',NULL);
+/*!40000 ALTER TABLE `joueur` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-11 12:21:53
+-- Dump completed on 2022-01-17 10:05:34

@@ -285,7 +285,7 @@ Calendar cldFin = Calendar.getInstance();
         String joueurId = textFieldSearch.getText();
 
         try {
-            pst = commonSwing.getCon().prepareStatement("delete from onlinebanking.joueur  where id = ?");
+            pst = commonSwing.getCon().prepareStatement("delete from Tennis.joueur  where id = ?");
 
             pst.setString(1, joueurId);
 
@@ -327,7 +327,7 @@ Calendar cldFin = Calendar.getInstance();
 
 
         try {
-            pst = commonSwing.getCon().prepareStatement("update onlinebanking.joueur set num_licence = ?,description = ?,email = ?,name = ?,phone = ? where id = ?");
+            pst = commonSwing.getCon().prepareStatement("update Tennis.joueur set num_licence = ?,description = ?,email = ?,name = ?,phone = ? where id = ?");
             //num_licence,description,email,name,phone)
             pst.setString(1, joueur_numLicence);
             pst.setString(2, joueur_description);
@@ -357,7 +357,7 @@ Calendar cldFin = Calendar.getInstance();
 
             String joueurId = textFieldSearch.getText();
 
-            pst = commonSwing.getCon().prepareStatement("select num_licence,description,email,name,phone from onlinebanking.joueur where id = ?");
+            pst = commonSwing.getCon().prepareStatement("select num_licence,description,email,name,phone from Tennis.joueur where id = ?");
             pst.setString(1, joueurId);
             ResultSet rs = pst.executeQuery();
 
@@ -408,7 +408,7 @@ Calendar cldFin = Calendar.getInstance();
 
 
         try {
-            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.joueur(num_licence,description,email,name,phone)values(?,?,?,?,?)");
+            pst = commonSwing.getCon().prepareStatement("insert into Tennis.joueur(num_licence,description,email,name,phone)values(?,?,?,?,?)");
             pst.setString(1, joueur_numLicence);
             pst.setString(2, joueur_description);
             pst.setString(3, joueur_email);
@@ -441,7 +441,7 @@ Calendar cldFin = Calendar.getInstance();
         String arbitreId = txtArbitreSearch.getText();
 
         try {
-            pst = commonSwing.getCon().prepareStatement("delete from onlinebanking.arbitre  where id = ?");
+            pst = commonSwing.getCon().prepareStatement("delete from Tennis.arbitre  where id = ?");
 
             pst.setString(1, arbitreId);
 
@@ -483,7 +483,7 @@ Calendar cldFin = Calendar.getInstance();
 
 
         try {
-            pst = commonSwing.getCon().prepareStatement("update onlinebanking.arbitre set num_licence = ?,description = ?,email = ?,name = ?,phone = ? where id = ?");
+            pst = commonSwing.getCon().prepareStatement("update Tennis.arbitre set num_licence = ?,description = ?,email = ?,name = ?,phone = ? where id = ?");
             //num_licence,description,email,name,phone)
             pst.setString(1, arbitre_numLicence);
             pst.setString(2, arbitre_description);
@@ -513,7 +513,7 @@ Calendar cldFin = Calendar.getInstance();
 
             String arbitreId = txtArbitreSearch.getText();
 
-            pst = commonSwing.getCon().prepareStatement("select num_licence,description,email,name,phone from onlinebanking.arbitre where id = ?");
+            pst = commonSwing.getCon().prepareStatement("select num_licence,description,email,name,phone from Tennis.arbitre where id = ?");
             pst.setString(1, arbitreId);
             ResultSet rs = pst.executeQuery();
 
@@ -563,7 +563,7 @@ Calendar cldFin = Calendar.getInstance();
         arbitre_description=txtArbitreDescription.getText();
 
         try {
-            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.arbitre(num_licence,description,email,name,phone)values(?,?,?,?,?)");
+            pst = commonSwing.getCon().prepareStatement("insert into Tennis.arbitre(num_licence,description,email,name,phone)values(?,?,?,?,?)");
             pst.setString(1, arbitre_numLicence);
             pst.setString(2, arbitre_description);
             pst.setString(3, arbitre_email);
@@ -595,7 +595,7 @@ Calendar cldFin = Calendar.getInstance();
         String tournoiId = txtSearchTournoi.getText();
 
         try {
-            pst = commonSwing.getCon().prepareStatement("delete from onlinebanking.tournoi  where id = ?");
+            pst = commonSwing.getCon().prepareStatement("delete from Tennis.tournoi  where id = ?");
 
             pst.setString(1, tournoiId);
 
@@ -645,7 +645,7 @@ Calendar cldFin = Calendar.getInstance();
 
         try {
            //pst tournoi
-            pst = commonSwing.getCon().prepareStatement("update onlinebanking.tournoi set date_debut_tournoi = ?,date_fin_tournoi = ?,nbr_inscrit = ?,nbr_tour = ?,nbre_joueurs_max = ?,nom_tournoi = ?,user_id =? where id = ?");
+            pst = commonSwing.getCon().prepareStatement("update Tennis.tournoi set date_debut_tournoi = ?,date_fin_tournoi = ?,nbr_inscrit = ?,nbr_tour = ?,nbre_joueurs_max = ?,nom_tournoi = ?,user_id =? where id = ?");
             pst.setString(1, tournoi_dateDebutTournoi);
             pst.setString(2, tournoi_dateFinTournoi);
             pst.setString(3, tournoi_nbreInscritTournoi);
@@ -656,7 +656,7 @@ Calendar cldFin = Calendar.getInstance();
             pst.setString(8, tournoi_id);
             pst.executeUpdate();
 
-            pst = commonSwing.getCon().prepareStatement("update onlinebanking.type_tournoi set description_messieur = ?,user_id=? where tournoi_id = ?");
+            pst = commonSwing.getCon().prepareStatement("update Tennis.type_tournoi set description_messieur = ?,user_id=? where tournoi_id = ?");
             pst.setString(1,tournoi_typeTournoi);
             pst.setString(2,"3");
             pst.setString(3,tournoi_id);
@@ -696,7 +696,7 @@ Calendar cldFin = Calendar.getInstance();
                     "tournoi.nbr_inscrit as 'Nombre inscrit',     " +
                     "tournoi.nbr_tour as 'nombre de tour' ," +
                     "tournoi.nbre_joueurs_max as 'nombre de joueur max'," +
-                    "type_tournoi.description_messieur as 'Type de tournoi' FROM onlinebanking.tournoi    INNER JOIN onlinebanking.type_tournoi ON tournoi.id = type_tournoi.tournoi_id where tournoi.id = ?");
+                    "type_tournoi.description_messieur as 'Type de tournoi' FROM Tennis.tournoi    INNER JOIN Tennis.type_tournoi ON tournoi.id = type_tournoi.tournoi_id where tournoi.id = ?");
             pst.setString(1, tournoiId);
             ResultSet rs = pst.executeQuery();
 
@@ -788,7 +788,7 @@ Calendar cldFin = Calendar.getInstance();
         try {
             //insert into tournoi (id, date_debut_tournoi, date_fin_tournoi, nbr_inscrit, nbr_tour, nbre_joueurs_max, nom_tournoi )
             //values ()
-            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.tournoi( date_debut_tournoi, date_fin_tournoi, nbr_inscrit, nbr_tour, nbre_joueurs_max, nom_tournoi,user_id )values(?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            pst = commonSwing.getCon().prepareStatement("insert into Tennis.tournoi( date_debut_tournoi, date_fin_tournoi, nbr_inscrit, nbr_tour, nbre_joueurs_max, nom_tournoi,user_id )values(?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             pst.setDate(1, (java.sql.Date) tournoi_dateDebutTournoi_sql);
             pst.setDate(2, (java.sql.Date) tournoi_dateFinTournoi_sql);
             pst.setString(3, tournoi_nbreInscritTournoi);
@@ -804,7 +804,7 @@ Calendar cldFin = Calendar.getInstance();
                  tournoi_id_generated = rs.getString(1);
             }
             
-            pst = commonSwing.getCon().prepareStatement("insert into onlinebanking.type_tournoi(description_messieur, tournoi_id,user_id) values (?,?,?) ",Statement.RETURN_GENERATED_KEYS);
+            pst = commonSwing.getCon().prepareStatement("insert into Tennis.type_tournoi(description_messieur, tournoi_id,user_id) values (?,?,?) ",Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, tournoi_typeTournoi);
             pst.setString(2, tournoi_id_generated);
             pst.setString(3, "3");

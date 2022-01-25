@@ -32,7 +32,7 @@ public class CommonSwing {
     {
         try
         {
-            pst = this.getCon().prepareStatement("select * from onlinebanking.joueur");
+            pst = this.getCon().prepareStatement("select * from Tennis.joueur");
             ResultSet rs = pst.executeQuery();
             table1.setModel(DbUtils.resultSetToTableModel(rs));
         }
@@ -46,7 +46,7 @@ public class CommonSwing {
     {
         try
         {
-            pst = this.getCon().prepareStatement("select * from onlinebanking.arbitre");
+            pst = this.getCon().prepareStatement("select * from Tennis.arbitre");
             ResultSet rs = pst.executeQuery();
             table1.setModel(DbUtils.resultSetToTableModel(rs));
         }
@@ -60,7 +60,7 @@ public class CommonSwing {
     {
         try
         {
-            pst = this.getCon().prepareStatement("select * from onlinebanking.tournoi");
+            pst = this.getCon().prepareStatement("select * from Tennis.tournoi");
             ResultSet rs = pst.executeQuery();
             table1.setModel(DbUtils.resultSetToTableModel(rs));
         }
@@ -73,7 +73,7 @@ public class CommonSwing {
     public void connect (){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            setCon(DriverManager.getConnection("jdbc:mysql://localhost:3306/onlinebanking","root",""));
+            setCon(DriverManager.getConnection("jdbc:mysql://localhost:3306/Tennis","root",""));
             System.out.println("Success");
         }catch (ClassNotFoundException ex){
             System.out.println("ClassNotFoundException ici"+ex);
